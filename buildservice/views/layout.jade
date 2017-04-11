@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    ul.nav
+      li
+        a(href="/") 主页
+      li
+        a(href="pack") 打包
+      li
+        a(href="status") 服务器状态
+
+    block content

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title><%= appName %>下载页</title>
+    <style>
+        html,
+        body,
+        #pc {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            font: 16px "Helvetica Neue", Helvetica, STHeiTi, "微软雅黑", sans-serif;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #pc {
+            background: url(http://sqimg.qq.com/qq_product_operations/im/mobileqq/mp/63/bg1.jpg) center bottom no-repeat;
+            background-size: 100% 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .name {
+            flex: 1;
+            font-size: 2em;
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .download-all {
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 10%;
+        }
+
+        .android,
+        .ios {
+            display: block;
+            text-decoration: none;
+            flex: 1;
+            color: #000000;
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ios {
+            margin-top: 5%;
+        }
+        #android-fake-btn,
+        #ios-fake-btn {
+            display: block;
+            height: 60px;
+            line-height: 60px;
+            background-color: #13bbfa;
+            color: #ffffff;
+            font-size: 2.4em;
+            padding: 10px 30px;
+            -moz-box-shadow:2px 2px 5px #333333;
+            -webkit-box-shadow:2px 2px 5px #333333;
+            box-shadow:2px 2px 5px #333333;
+            text-align: center;
+            text-decoration: none;
+        }
+        #qrcode{
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            border: 10px solid hsla(0,0%,100%, .5);
+            background: white;
+            background-clip: padding-box;
+        }
+    </style>
+</head>
+<body>
+<div id="pc">
+    <div class="name"><%= appName %></div>
+    <div class="download-all">
+        <% if (typeof(androidLink) !== "undefined") { %>
+        <div class="android" >
+            <a id="android-fake-btn" href="<%= androidLink %>">Android</a>
+            <p class="vernew">最新版本： <span><%= androidVersion %></span> | 发布日期： <span><%= androidUpdateTime %></span></p>
+        </div>
+        <% } %>
+        <% if (typeof(iosLink) !== "undefined") { %>
+        <div class="ios">
+            <a id="ios-fake-btn" href="<%= iosLink %>">iOS</a>
+            <p class="vernew">最新版本： <span><%= iosVersion %></span></span> | 发布日期： <span><%= iosUpdateTime %></span></p>
+        </div>
+        <% } %>
+    </div>
+</div>
+<div id="qrcode">
+    <img src="<%= url %>" alt="当前页面二维码">
+</div>
+<script>
+    var os = function () {
+        var ua = navigator.userAgent,
+                isQB = /(?:MQQBrowser|QQ)/.test(ua),
+                isWindowsPhone = /(?:Windows Phone)/.test(ua),
+                isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+                isAndroid = /(?:Android)/.test(ua),
+                isFireFox = /(?:Firefox)/.test(ua),
+                isChrome = /(?:Chrome|CriOS)/.test(ua),
+                isIpad = /(?:iPad|PlayBook)/.test(ua),
+                isTablet = /(?:iPad|PlayBook)/.test(ua) || (isFireFox && /(?:Tablet)/.test(ua)),
+                isSafari = /(?:Safari)/.test(ua),
+                isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+                isOpen = /(?:Opera Mini)/.test(ua),
+                isUC = /(?:UCWEB|UCBrowser)/.test(ua),
+                isPc = !isPhone && !isAndroid && !isSymbian;
+        return {
+            isQB: isQB,
+            isTablet: isTablet,
+            isPhone: isPhone,
+            isAndroid: isAndroid,
+            isPc: isPc,
+            isOpen: isOpen,
+            isUC: isUC,
+            isIpad: isIpad
+        };
+    }();
+    if (os.isAndroid) {
+        document.getElementById('qrcode').style.display = 'none';
+        if(document.getElementsByClassName('ios')[0]){
+            document.getElementsByClassName('ios')[0].style.display = 'none';
+        }
+    }
+    else if (os.isPhone) {
+        document.getElementById('qrcode').style.display = 'none';
+        if(document.getElementsByClassName('android')[0]){
+            document.getElementsByClassName('android')[0].style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

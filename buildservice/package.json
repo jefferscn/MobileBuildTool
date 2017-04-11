@@ -1,0 +1,50 @@
+{
+  "name": "ios-pack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/dist/js/index.js",
+    "bundle": "webpack --watch",
+    "start:dev": "webpack-dev-server --inline --content-base ./src/client/ --history-api-fallback",
+    "start:prod": "webpack && node src/server/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-core": "^6.22.1",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "~2.2.0",
+    "express": "^4.14.0",
+    "express-status-monitor": "^0.1.5",
+    "fs-extra": "^1.0.0",
+    "fs-extra-promise": "^1.0.1",
+    "jade": "~1.11.0",
+    "mongoose": "^4.9.3",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.11.0",
+    "plist": "^2.0.1",
+    "serve-favicon": "^2.3.0",
+    "svn-spawn": "^0.1.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.0.3",
+    "babel-loader": "^6.2.3",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-react-hmre": "^1.1.0",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.3.0",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "webpack": "^1.12.2",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0"
+  }
+}
