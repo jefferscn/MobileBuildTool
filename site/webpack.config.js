@@ -3,16 +3,16 @@ import webpack from "webpack";
 
 export default (DEBUG, PATH, PORT = 3000) => ({
     entry: (DEBUG ? [
-            `webpack-dev-server/client?http://localhost:${PORT}`,
+            `webpack-hot-middleware/client?reload=true`,
         ] : []).concat([
         'babel-polyfill',
-        './src/entry',
+        './src/entry_ui',
     ]),
 
     output: {
-        path: path.resolve(__dirname, PATH, "generated"),
+        path: '/',
         filename: "main.js",
-        publicPath: "./generated/"
+        publicPath: "/"
     },
 
     cache: DEBUG,
@@ -27,7 +27,7 @@ export default (DEBUG, PATH, PORT = 3000) => ({
             {
                 test: /\.jsx?$/,
                 include: [
-                    path.resolve(__dirname, "src"),
+                    path.resolve("src")
                 ],
                 exclude: [
                 ],
@@ -36,7 +36,10 @@ export default (DEBUG, PATH, PORT = 3000) => ({
         ]
     },
     plugins: DEBUG
-        ? []
+        ? [
+            new webpack.optimize.OccurenceOrderPlugin(),
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoErrorsPlugin()]
         : [
             new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}),
             new webpack.optimize.DedupePlugin(),

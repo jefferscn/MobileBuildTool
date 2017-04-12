@@ -4,10 +4,13 @@ import nodeExternals from 'webpack-node-externals';
 export default  {
     name: 'server',
     target: 'node',
-    entry: ['./src/entry_server.js'],
+    entry: ['babel-polyfill','./src/entry_server.js'],
+    node: {
+        __dirname: false
+    },
     output: {
-        path: './build/',
-        publicPath: '/build/',
+        path: './',
+        publicPath: '/',
         filename: 'server.js',
         libraryTarget: 'commonjs',
     },
@@ -22,6 +25,7 @@ export default  {
                 test: /\.jsx?$/,
                 include: [
                     path.resolve(__dirname, "src"),
+                    path.resolve(__dirname, "webpack.config.js")
                 ],
                 exclude: [
                 ],

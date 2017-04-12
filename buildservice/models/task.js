@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { projectSchema } from './project';
 const taskSchema = new mongoose.Schema({
-    id: String,
     projectId: String,
     project: projectSchema,
     version: String,
