@@ -57,7 +57,11 @@
   "dependencies": {
     "aor-rich-text-input": "^1.0.0",
     "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
     "express": "^4.15.2",
+    "express-cors": "0.0.3",
+    "express-range": "^2.0.1",
+    "mbtmodel": "file:../model",
     "method-override": "^2.3.8",
     "mongodb": "^2.2.25",
     "mongoose": "^4.9.4",
