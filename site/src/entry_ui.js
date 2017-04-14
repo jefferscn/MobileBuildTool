@@ -5,7 +5,7 @@ import { ProjectList , ProjectCreate , ProjectEdit , ProjectShow } from './ui/pr
 import { TaskList , TaskCreate , TaskEdit } from './ui/tasks'
 
 render(
-    <Admin restClient={simpleRestClient('http://1.1.8.34:3001')}>
+    <Admin restClient={simpleRestClient('.')}>
         <Resource name="projects" show = { ProjectShow } edit = { ProjectEdit } create= { ProjectCreate } list={ProjectList} />
         <Resource name="tasks" edit = { TaskEdit } create= { TaskCreate } list={ TaskList } />
     </Admin>,
