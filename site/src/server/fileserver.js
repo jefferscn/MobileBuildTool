@@ -2,7 +2,8 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 var upload = multer({ dest: 'uploads/' });
-const baseUrl = "http://1.1.8.34:3001/download?id=";
+// const baseUrl = "http://1.1.8.34:3001/download?id=";
+const baseUrl = "https://dev.bokesoft.com/yigomobile2/download?id=";
 export default function bind(app, mongoose) {
     const FileRecordSchema = new mongoose.Schema({
         filename: String,

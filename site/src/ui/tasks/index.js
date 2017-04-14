@@ -1,7 +1,8 @@
 import React , { PureComponent } from 'react';
 import { List, Datagrid, TextInput , Create , Edit , TabbedForm , SimpleForm , ReferenceInput ,
-    SelectInput , DisabledInput ,
+    SelectInput , DisabledInput , Show , SimpleShowLayout , DateField ,
     EditButton , FormTab , TextField , UrlField , ReferenceField , BooleanInput } from 'admin-on-rest/lib/mui';
+import IOSInstallLink from '../IOSInstallLink';
 
 export class TaskList extends PureComponent{
     render(){
@@ -13,6 +14,7 @@ export class TaskList extends PureComponent{
                 <TextField source="platform" label="平台"/>
                 <TextField source="version" label="版本"/>
                 <TextField source="status.code" label="状态" />
+                <DateField source="dateOfCreate" showTime label="创建日期" />
                 <EditButton />
             </Datagrid>
         </List>);
@@ -57,5 +59,17 @@ export class TaskEdit extends PureComponent{
                 </SimpleForm>
             </Edit>
         )
+    }
+}
+
+export class TaskShow extends PureComponent{
+    render(){
+        return (<Show {...this.props} hasEdit={false} hasList={false}>
+            <SimpleShowLayout>
+                <TextField label="项目" source="project.name" />
+                <TextField source="version" label="版本"/>
+                <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
+            </SimpleShowLayout>
+        </Show>)
     }
 }

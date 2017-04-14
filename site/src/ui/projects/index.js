@@ -1,8 +1,9 @@
 import React , { PureComponent } from 'react';
-import { List, Datagrid, TextInput , Create , Edit , TabbedForm , 
-    EditButton , FormTab , TextField , UrlField } from 'admin-on-rest/lib/mui';
+import { List, Datagrid, TextInput , Create , Edit , TabbedForm , Show ,ReferenceField ,
+    SimpleShowLayout , EditButton , FormTab , TextField , UrlField } from 'admin-on-rest/lib/mui';
 // import RichTextInput from 'aor-rich-text-input';
 import FileInput , { FilePreview } from '../FileInput'
+import IOSInstallLink from '../IOSInstallLink';
 
 export class ProjectList extends PureComponent{
     render(){
@@ -86,27 +87,15 @@ export class ProjectEdit extends PureComponent{
 
 export class ProjectShow extends PureComponent{
     render(){
-        return (
-            <TabbedForm {...this.props}>
-                <FormTab label="基本信息">
-                    <TextField source="name" />
-                    <TextField source="desc" />
-                </FormTab>
-                <FormTab label="ios">
-                    <TextField source="ios.svn.url" />
-                    <TextField source="ios.svn.username" />
-                    <TextField source="ios.svn.password" type="password"/>
-                    <UrlField source = "ios.mobileProvision.url"/>
-                </FormTab>
-                <FormTab label="Android">
-                    <TextInput source="android.svn.url" />
-                    <TextInput source="android.svn.userName" />
-                    <TextInput source="android.svn.password" type="password"/>
-                    <UrlField source = "ios.mobileProvision.url"/>
-                    <TextInput source="android.keyStore.userName" />
-                    <TextInput source="android.keyStore.password" type="password"/>
-                </FormTab>
-            </TabbedForm>
-        )
+        return (<Show {...this.props} hasEdit={false} hasList={false}>
+            <SimpleShowLayout>
+                <TextField label="项目" source="name" />
+                <TextField source="lastRelease.ios.version" label="版本"/>
+                <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
+                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "plistUrl"/>
+                </ReferenceField>
+            </SimpleShowLayout>
+        </Show>)
     }
 }
+

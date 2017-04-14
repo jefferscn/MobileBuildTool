@@ -48,7 +48,7 @@ var user = app.user = restful.model('projects', ProjectSchema)
         before: function (req, res, next) {
             if (req.query.sort) {
                 var sort = JSON.parse(req.query.sort);
-                req.query.sort = (sort[1] === "desc" ? '-' : '') + sort[0];
+                req.query.sort = (sort[1] === "DESC" ? '-' : '') + sort[0];
             }
             if (req.query.range) {
                 var range = JSON.parse(req.query.range);
@@ -92,13 +92,14 @@ var task= app.task= restful.model('tasks', TaskSchema)
         before: function (req, res, next) {
             if (req.query.sort) {
                 var sort = JSON.parse(req.query.sort);
-                req.query.sort = (sort[1] === "desc" ? '-' : '') + sort[0];
+                req.query.sort = (sort[1] === "DESC" ? '-' : '') + sort[0];
             }
             if (req.query.range) {
                 var range = JSON.parse(req.query.range);
                 req.query.skip = range[0];
                 req.query.limit = range[1];
             }
+            console.log(req.query);
             next()
         },
         after: (req, res, next) => {

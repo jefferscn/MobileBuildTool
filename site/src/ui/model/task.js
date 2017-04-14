@@ -9,10 +9,9 @@ const taskSchema = new mongoose.Schema({
     release: Boolean,
     status: {
         code: String,
-        log: String,
+        log: String
     },
-    ipaUrl: String,
-    plistUrl: String,
+    targetUrl: String,
     dateOfCreate: { type: Date, default: Date.now },
 },
 {
