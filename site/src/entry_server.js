@@ -122,14 +122,6 @@ app.get('/', function (req, res) {
     res.sendFile('index.html', { root: path.resolve(__dirname) });
 });
 
-app.get('/download/:task',(req,res)=>{
-
-});
-
-app.get('/release/:project',(req,res)=>{
-
-});
-
 app.listen(3001);
 
 

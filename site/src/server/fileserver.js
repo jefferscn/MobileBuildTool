@@ -47,4 +47,20 @@ export default function bind(app, mongoose) {
         }
         res.status(404).end();
     })
+    app.get('/download/:id', async (req, res) => {
+        var fr = await FileRecord.findById(req.params.id);
+        if (fr) {
+            var file = path.resolve(__dirname, fr.path);
+            var filename = fr.filename;
+            var mimetype = fr.mimetype;
+            var newFileName = encodeURIComponent(filename);
+            res.setHeader('Content-Disposition', 'attachment;filename*=UTF-8\'\'' + newFileName);
+            res.setHeader('Content-type', mimetype + "; charset=utf-8");
+            var filestream = fs.createReadStream(file);
+            filestream.pipe(res);
+            return;
+        }
+        res.status(404).end();
+    })
+
 }

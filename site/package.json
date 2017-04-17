@@ -67,6 +67,7 @@
     "mongoose": "^4.9.4",
     "morgan": "^1.8.1",
     "multer": "^1.3.0",
-    "node-restful": "^0.2.6"
+    "node-restful": "^0.2.6",
+    "whatwg-fetch": "^2.0.3"
   }
 }
