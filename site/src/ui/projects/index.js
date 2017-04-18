@@ -1,9 +1,11 @@
 import React , { PureComponent } from 'react';
-import { List, Datagrid, TextInput , Create , Edit , TabbedForm , Show ,ReferenceField ,
+import { List, Datagrid, TextInput , Create , Edit , TabbedForm , Show ,ReferenceField , ShowButton ,
     SimpleShowLayout , EditButton , FormTab , TextField , UrlField } from 'admin-on-rest/lib/mui';
 // import RichTextInput from 'aor-rich-text-input';
 import FileInput , { FilePreview } from '../FileInput'
 import IOSInstallLink from '../IOSInstallLink';
+import baseUrl from '../../server/baseUrl';
+import QRCodeField from '../QRCodeField';
 
 export class ProjectList extends PureComponent{
     render(){
@@ -13,6 +15,7 @@ export class ProjectList extends PureComponent{
                 <TextField source="name" />
                 <TextField source="desc" />
                 <EditButton />
+                <ShowButton/>
             </Datagrid>
         </List>);
     }
@@ -91,8 +94,9 @@ export class ProjectShow extends PureComponent{
             <SimpleShowLayout>
                 <TextField label="项目" source="name" />
                 <TextField source="lastRelease.ios.version" label="版本"/>
+                <QRCodeField text={ (record)=>`${baseUrl}/#/projects/${record.id}/show`} source="id" label="二维码"/>
                 <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
-                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "plistUrl"/>
+                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
                 </ReferenceField>
             </SimpleShowLayout>
         </Show>)

@@ -68,6 +68,7 @@
     "morgan": "^1.8.1",
     "multer": "^1.3.0",
     "node-restful": "^0.2.6",
+    "qrcode": "^0.8.1",
     "whatwg-fetch": "^2.0.3"
   }
 }

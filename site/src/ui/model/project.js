@@ -31,11 +31,13 @@ const projectSchema = new mongoose.Schema({
     lastRelease: {
         ios: {
             taskId:String,    //taskId
-            version:String
+            version:String,
+            releaseDate:Date
         },
         android:  {
             taskId:String,    //taskId
-            version:String
+            version:String,
+            releaseDate:Date
         },
     },
 },{

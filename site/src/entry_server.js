@@ -9,6 +9,7 @@ import fileserver from './server/fileserver';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import checkUpdate from './server/checkupdate';
 import cors from 'cors';
 import webpackDevConfig from '../webpack.config';
 import { ProjectSchema, TaskSchema , Project } from './ui/model';
@@ -121,6 +122,8 @@ task.register(app, '/tasks');
 app.get('/', function (req, res) {
     res.sendFile('index.html', { root: path.resolve(__dirname) });
 });
+
+checkUpdate(app);
 
 app.listen(3001);
 

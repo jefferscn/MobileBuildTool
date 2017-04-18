@@ -1,8 +1,10 @@
 import React , { PureComponent } from 'react';
 import { List, Datagrid, TextInput , Create , Edit , TabbedForm , SimpleForm , ReferenceInput ,
-    SelectInput , DisabledInput , Show , SimpleShowLayout , DateField ,
+    SelectInput , DisabledInput , Show , SimpleShowLayout , DateField , ShowButton , FunctionField ,
     EditButton , FormTab , TextField , UrlField , ReferenceField , BooleanInput } from 'admin-on-rest/lib/mui';
 import IOSInstallLink from '../IOSInstallLink';
+import baseUrl from '../../server/baseUrl';
+import QRCodeField from '../QRCodeField';
 
 export class TaskList extends PureComponent{
     render(){
@@ -15,7 +17,7 @@ export class TaskList extends PureComponent{
                 <TextField source="version" label="版本"/>
                 <TextField source="status.code" label="状态" />
                 <DateField source="dateOfCreate" showTime label="创建日期" />
-                <EditButton />
+                <ShowButton/>
             </Datagrid>
         </List>);
     }
@@ -68,6 +70,7 @@ export class TaskShow extends PureComponent{
             <SimpleShowLayout>
                 <TextField label="项目" source="project.name" />
                 <TextField source="version" label="版本"/>
+                <QRCodeField text={ (record)=>`${baseUrl}/#/tasks/${record.id}/show`} source="id" label="二维码"/>
                 <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
             </SimpleShowLayout>
         </Show>)

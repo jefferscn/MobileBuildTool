@@ -55,7 +55,7 @@ export default function bind(app, mongoose) {
             var mimetype = fr.mimetype;
             var newFileName = encodeURIComponent(filename);
             res.setHeader('Content-Disposition', 'attachment;filename*=UTF-8\'\'' + newFileName);
-            res.setHeader('Content-type', mimetype + "; charset=utf-8");
+            res.setHeader('Content-type', mimetype);
             var filestream = fs.createReadStream(file);
             filestream.pipe(res);
             return;
