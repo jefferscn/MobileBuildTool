@@ -11,9 +11,9 @@ export class ProjectList extends PureComponent{
     render(){
         return (<List {...this.props}>
             <Datagrid>
-                <TextField source="id" />
                 <TextField source="name" />
                 <TextField source="desc" />
+                <TextField source="lastRelease.ios.version" label="IOS版本"/>
                 <EditButton />
                 <ShowButton/>
             </Datagrid>

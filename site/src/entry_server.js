@@ -54,7 +54,7 @@ var user = app.user = restful.model('projects', ProjectSchema)
             if (req.query.range) {
                 var range = JSON.parse(req.query.range);
                 req.query.skip = range[0];
-                req.query.limit = range[1];
+                req.query.limit = range[1]-range[0] + 1;
             }
             next()
         },
@@ -98,7 +98,7 @@ var task= app.task= restful.model('tasks', TaskSchema)
             if (req.query.range) {
                 var range = JSON.parse(req.query.range);
                 req.query.skip = range[0];
-                req.query.limit = range[1];
+                req.query.limit = range[1]-range[0] + 1;
             }
             console.log(req.query);
             next()

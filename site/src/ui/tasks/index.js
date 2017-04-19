@@ -8,7 +8,7 @@ import QRCodeField from '../QRCodeField';
 
 export class TaskList extends PureComponent{
     render(){
-        return (<List {...this.props}>
+        return (<List {...this.props} sort={{ field: 'dateOfCreate', order: 'DESC' }}>
             <Datagrid>
                 <ReferenceField label="项目" source="projectId" reference="projects">
                     <TextField source="name" />
