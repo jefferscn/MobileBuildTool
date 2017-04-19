@@ -31,10 +31,13 @@ export class TaskCreate extends PureComponent{
                     <ReferenceInput label="项目" allowEmpty source="projectId" reference="projects">
                         <SelectInput optionText="name" />
                     </ReferenceInput>
-                    <SelectInput source="platform" choices={[
+                    <SelectInput source="platform" defaultValue="ios" choices={[
                         { id: 'android', name: 'Android' },
                         { id: 'ios', name: 'IOS' }
                     ]} />
+                    <ReferenceInput label="Framework Version" allowEmpty source="frameworkId" reference="frameworks">
+                        <SelectInput optionText="name" />
+                    </ReferenceInput>
                     <TextInput source="version" label="版本" defaultValue="1.0.0"/>
                     <BooleanInput source="release" label="是否发布" defaultValue ={false}/>
                 </SimpleForm>

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { projectSchema } from './project';
+import { frameworkSchema } from './framework';
 const taskSchema = new mongoose.Schema({
     projectId: String,
     project: projectSchema,
@@ -7,6 +8,8 @@ const taskSchema = new mongoose.Schema({
     platform: String,
     configuration: String,
     release: Boolean,
+    frameworkId:String,
+    framework: frameworkSchema,
     status: {
         code: String,
         log: String

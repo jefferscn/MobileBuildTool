@@ -12,7 +12,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import checkUpdate from './server/checkupdate';
 import cors from 'cors';
 import webpackDevConfig from '../webpack.config';
-import { ProjectSchema, TaskSchema , Project } from './ui/model';
+import { ProjectSchema, TaskSchema , Project , FrameworkSchema , Framework } from './ui/model';
 const app = new express();
 app.use(cors());
 export default app;
@@ -42,38 +42,36 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
+const queryTransform = (req,res,next)=> {
+    if (req.query.sort) {
+        var sort = JSON.parse(req.query.sort);
+        req.query.sort = (sort[1] === "DESC" ? '-' : '') + sort[0];
+    }
+    if (req.query.range) {
+        var range = JSON.parse(req.query.range);
+        req.query.skip = range[0];
+        req.query.limit = range[1]-range[0] + 1;
+    }
+    next()
+}
+
+const totalRange = (req,res,next)=>{
+    delete req.quer.options;    // Remove skip and limit to get total count
+    req.quer.count(function (err, totalRecords) { //Apply remaining query
+        if (err) {
+            next();
+        } else {
+            res.setHeader('Content-Range', totalRecords + '')
+            next();
+        }
+    });
+}
 
 var user = app.user = restful.model('projects', ProjectSchema)
     .methods(['post', 'put', 'delete', {
         method: 'get',
-        before: function (req, res, next) {
-            if (req.query.sort) {
-                var sort = JSON.parse(req.query.sort);
-                req.query.sort = (sort[1] === "DESC" ? '-' : '') + sort[0];
-            }
-            if (req.query.range) {
-                var range = JSON.parse(req.query.range);
-                req.query.skip = range[0];
-                req.query.limit = range[1]-range[0] + 1;
-            }
-            next()
-        },
-        after: (req, res, next) => {
-            delete req.quer.options;    // Remove skip and limit to get total count
-            req.quer.count(function (err, totalRecords) { //Apply remaining query
-                if (err) {
-                    next();
-                } else {
-                    // console.log(totalRecords);
-                    // res.locals.bundle = {
-                    //     data: res.locals.bundle,
-                    //     total: totalRecords
-                    // }
-                    res.setHeader('Content-Range', totalRecords + '')
-                    next();
-                }
-            });
-        }
+        before: queryTransform, 
+        after: totalRange
     }])
     .includeSchema(false);
 
@@ -86,38 +84,28 @@ var task= app.task= restful.model('tasks', TaskSchema)
                 req.body.status={code:'waiting'};
                 var pp = await Project.findById(req.body.projectId);
                 req.body.project = pp;
+                pp = await Framework.findById(req.body.frameworkId);
+                req.body.framework = pp;
                 next();
             }
         }, 'delete', {
         method: 'get',
-        before: function (req, res, next) {
-            if (req.query.sort) {
-                var sort = JSON.parse(req.query.sort);
-                req.query.sort = (sort[1] === "DESC" ? '-' : '') + sort[0];
-            }
-            if (req.query.range) {
-                var range = JSON.parse(req.query.range);
-                req.query.skip = range[0];
-                req.query.limit = range[1]-range[0] + 1;
-            }
-            console.log(req.query);
-            next()
-        },
-        after: (req, res, next) => {
-            delete req.quer.options;    // Remove skip and limit to get total count
-            req.quer.count(function (err, totalRecords) { //Apply remaining query
-                if (err) {
-                    next();
-                } else {
-                    res.setHeader('Content-Range', totalRecords + '')
-                    next();
-                }
-            });
-        }
+        before: queryTransform, 
+        after: totalRange
     }])
     .includeSchema(false);
 
 task.register(app, '/tasks');
+
+var framework  = app.framework = restful.model('frameworks',FrameworkSchema)
+    .methods(['post','put', 'delete', {
+        method: 'get',
+        before: queryTransform, 
+        after: totalRange
+    }])
+    .includeSchema(false);
+
+framework.register(app,'/frameworks');
 
 app.get('/', function (req, res) {
     res.sendFile('index.html', { root: path.resolve(__dirname) });
