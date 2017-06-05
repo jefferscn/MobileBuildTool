@@ -15,6 +15,7 @@ import webpackDevConfig from '../webpack.config';
 import { ProjectSchema, TaskSchema , Project , FrameworkSchema , Framework } from './ui/model';
 const app = new express();
 app.use(cors());
+
 export default app;
 var config = webpackDevConfig(true, 'build', 3001);
 var compiler = webpack(config);
@@ -32,7 +33,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.mongoose = mongoose; // used for testing
-mongoose.connect("mongodb://localhost/mbt");
+mongoose.connect("mongodb://1.1.8.34/mbt");
 
 app.use(webpackHotMiddleware(compiler));
 app.use(morgan('dev'));
@@ -67,8 +68,50 @@ const totalRange = (req,res,next)=>{
     });
 }
 
+const queryRepeat = async (req, res, next) => {
+    // console.log(req.body.name);
+    if(req.body.name == "" || req.body.name == undefined){
+        res.status(400).json({message: 'Name cannot be empty！'});
+        res.end();
+    }else{ 
+        var repeat = await Project.find({name: req.body.name});
+
+        if(repeat.length != 0){
+            res.status(400).json({message: 'Name cannot repeated！'});
+            res.end();
+        }else{
+            next();     
+        }
+    }
+}
+
+const del = async (req, res, next) => {
+    // console.log(req);
+    // console.log(req.originalUrl);
+    const id = req.originalUrl.replace(/\/projects\//, '');
+    // console.log(id);
+    var project = await Project.findById(id);
+    // console.log(project);
+    var iosVersion = project.lastRelease.ios.version;
+    var androidVersion = project.lastRelease.android.version;
+    // console.log(iosVersion);
+    if(iosVersion || androidVersion){
+        res.status(400).json({message: 'This project cannot be deleted!'});
+        // res.send(400, 'This project cannot be deleted!');
+        res.end();
+    }else{
+        next();
+    }
+}
+
 var user = app.user = restful.model('projects', ProjectSchema)
-    .methods(['post', 'put', 'delete', {
+    .methods([{
+        method:'post',
+        before: queryRepeat
+    }, 'put', {
+        method: 'delete',
+        before: del
+        }, {
         method: 'get',
         before: queryTransform, 
         after: totalRange
@@ -98,7 +141,11 @@ var task= app.task= restful.model('tasks', TaskSchema)
 task.register(app, '/tasks');
 
 var framework  = app.framework = restful.model('frameworks',FrameworkSchema)
-    .methods(['post','put', 'delete', {
+    .methods([
+        {
+            method: 'post',
+            before: queryRepeat
+        },'put', 'delete', {
         method: 'get',
         before: queryTransform, 
         after: totalRange

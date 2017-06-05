@@ -28,7 +28,7 @@ gulp.task('serve:start', () => {
     const config = webpackConfig(true, DEST_DIR, PORT);
     return new WebpackDevServer(webpack(config), {
         contentBase: '.',
-        publicPath: "/generated/",
+        publicPath: "/",
         watchDelay: 100
     })
         .listen(PORT, '0.0.0.0', (err) => {

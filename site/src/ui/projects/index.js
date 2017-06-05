@@ -1,6 +1,6 @@
 import React , { PureComponent } from 'react';
 import { List, Datagrid, TextInput , Create , Edit , TabbedForm , Show ,ReferenceField , ShowButton ,
-    SimpleShowLayout , EditButton , FormTab , TextField , UrlField } from 'admin-on-rest/lib/mui';
+    SimpleShowLayout , EditButton , FormTab , TextField , UrlField, Responsive, SimpleList } from 'admin-on-rest/lib/mui';
 // import RichTextInput from 'aor-rich-text-input';
 import FileInput , { FilePreview } from '../FileInput'
 import IOSInstallLink from '../IOSInstallLink';
@@ -10,13 +10,26 @@ import QRCodeField from '../QRCodeField';
 export class ProjectList extends PureComponent{
     render(){
         return (<List {...this.props}>
-            <Datagrid>
-                <TextField source="name" />
-                <TextField source="desc" />
-                <TextField source="lastRelease.ios.version" label="IOS版本"/>
-                <EditButton />
-                <ShowButton/>
-            </Datagrid>
+            <Responsive
+                small={
+                    <SimpleList
+                        primaryText={record => record.name}
+                        secondaryText={record => record.desc}
+                        tertiaryText={record => `IOS版本 ${record.lastRelease && record.lastRelease.ios.version}`
+                    }
+                    />
+                }
+
+                medium={
+                    <Datagrid>
+                        <TextField source="name" />
+                        <TextField source="desc" />
+                        <TextField source="lastRelease.ios.version" label="IOS版本"/>
+                        <EditButton />
+                        <ShowButton />
+                    </Datagrid>
+                }
+            />
         </List>);
     }
 }
@@ -90,16 +103,18 @@ export class ProjectEdit extends PureComponent{
 
 export class ProjectShow extends PureComponent{
     render(){
-        return (<Show {...this.props} hasEdit={false} hasList={false}>
-            <SimpleShowLayout>
-                <TextField label="项目" source="name" />
-                <TextField source="lastRelease.ios.version" label="版本"/>
-                <QRCodeField text={ (record)=>`${baseUrl}/#/projects/${record.id}/show`} source="id" label="二维码"/>
-                <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
-                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
-                </ReferenceField>
-            </SimpleShowLayout>
-        </Show>)
+        return (
+            <Show {...this.props} hasEdit={false} hasList={false}>
+                <SimpleShowLayout>
+                    <TextField label="项目" source="name" />
+                    <TextField source="lastRelease.ios.version" label="版本"/>
+                    <QRCodeField text={ (record)=>`${baseUrl}/#/projects/${record.id}/show`} source="id" label="二维码"/>
+                    <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
+                        <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
+                    </ReferenceField>
+                </SimpleShowLayout>
+            </Show>
+        )
     }
 }
 
