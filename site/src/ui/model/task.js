@@ -10,11 +10,19 @@ const taskSchema = new mongoose.Schema({
     release: Boolean,
     frameworkId:String,
     framework: frameworkSchema,
+    debug:  {
+        type: Boolean,
+        default: true,
+    },
     status: {
         code: String,
         log: String
     },
     targetUrl: String,
+    package : {
+        filename: String,
+        url:String
+    },
     dateOfCreate: { type: Date, default: Date.now },
 },
 {

@@ -1,21 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import Poll from './bin/poll';
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
-import Poll from './bin/poll';
 const poll = new Poll();
 poll.start();
-
-
-
-
-
-
-
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     const err = new Error('Not Found');

@@ -32,7 +32,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.mongoose = mongoose; // used for testing
-mongoose.connect("mongodb://localhost/mbt");
+mongoose.connect("mongodb://localhost/cordovapack");
 
 app.use(webpackHotMiddleware(compiler));
 app.use(morgan('dev'));

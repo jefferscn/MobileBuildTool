@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 const projectSchema = new mongoose.Schema({
     name: String,
     desc: String,
+    appId: String,
+    icon:{ 
+        filename: String,
+        url:String
+    },
     ios: {
         svn: {
             url: String,
@@ -19,6 +24,7 @@ const projectSchema = new mongoose.Schema({
             userName: String,
             password: String,
         },
+        appId: String,
         keyStore: {
             file: {
                 filename: String,
@@ -29,6 +35,7 @@ const projectSchema = new mongoose.Schema({
         },
     },
     lastRelease: {
+        appId: String,
         ios: {
             taskId: String,
             version: String,

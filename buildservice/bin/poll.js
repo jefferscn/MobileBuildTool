@@ -1,4 +1,4 @@
-import pack from '../pack/pack.ios';
+import pack from '../cordovapack/pack';
 import { Task } from '../models/index';
 
 function findTask(){
@@ -26,7 +26,6 @@ Poll.prototype = {
         clearInterval(this.interval);
     },
     monitor() {
-        console.log('monitor');
         if (this.busy) {
             return;
         }
@@ -39,6 +38,7 @@ Poll.prototype = {
                 this.busy = false;
             })
             .catch((err) => {
+                console.log(err);
                 this.busy = false;
             });
     },

@@ -7,8 +7,9 @@
     {"message":
         [
             {
-                "androidVersion":"1.1.4", 
-                "androidLink":"https://dev.bokesoft.com/yigomobile/public/apk/1484272290000/万华物流-debug.apk","iosLink":"https://dev.bokesoft.com/yigomobile/public/ios/1483587328000/index.html",
+                "androidVersion":"1.1.4",
+                "androidLink":"https://dev.bokesoft.com/yigomobile/public/apk/1484272290000/万华物流-debug.apk",
+                "iosLink":"https://dev.bokesoft.com/yigomobile/public/ios/1483587328000/index.html",
                 "iosVersion":"1.1.4"
             }
         ]

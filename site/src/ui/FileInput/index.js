@@ -1,6 +1,7 @@
 import React , { Component } from 'react';
 import { ImageInput } from 'admin-on-rest/lib/mui/input/ImageInput';
 export FilePreview from './filepreview';
+export ImagePreview from './imagepreview';
 
 const readFile = file => new Promise((resolve, reject) => {
     const reader = new FileReader();

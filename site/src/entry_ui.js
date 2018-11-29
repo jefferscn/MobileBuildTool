@@ -10,7 +10,7 @@ render(
     <Admin title="手机打包服务" restClient={simpleRestClient('.')}>
         <Resource name="projects" show = { ProjectShow } edit = { ProjectEdit } create= { ProjectCreate } list={ProjectList} />
         <Resource name="tasks" edit = { TaskEdit } show = { TaskShow }  create= { TaskCreate } list={ TaskList } />
-        <Resource name="frameworks" edit = { FrameworkEdit }  create= { FrameworkCreate } list={ FrameworkList } />
+        {/* <Resource name="frameworks" edit = { FrameworkEdit }  create= { FrameworkCreate } list={ FrameworkList } /> */}
     </Admin>,
     document.getElementById('app')
 );

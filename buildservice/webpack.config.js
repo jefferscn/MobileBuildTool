@@ -1,3 +1,4 @@
+var nodeExternals = require('webpack-node-externals');
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
@@ -34,7 +35,7 @@ const config = {
         path: SERVER_BUILD_DIR,
         filename: 'index.js'
     },
-    externals: nodeModules,
+    externals: [nodeExternals()],
     module: {
         loaders: [
             {
@@ -45,9 +46,21 @@ const config = {
                 test: /\.json$/,
                 loader: 'json-loader'
             },
+            {
+                test: /\.jsx?$/,
+                include: [
+                    path.resolve(__dirname, "bin"),
+                    path.resolve(__dirname, "app.js"),
+                    path.resolve(__dirname, "config.js"),
+                    path.resolve(__dirname, "cordovapack"),
+                ],
+                exclude: [
+                ],
+                loader: "babel"
+            }
         ]
     },
-    watch: true,
+    watch: false,
 };
 module.exports = config;
 

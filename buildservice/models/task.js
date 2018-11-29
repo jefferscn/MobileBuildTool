@@ -7,11 +7,16 @@ const taskSchema = new mongoose.Schema({
     platform: String,
     configuration: String,
     release: Boolean,
+    debug: Boolean,
     status: {
         code: String,
         log: String,
     },
     targetUrl: String,
+    package : {
+        filename: String,
+        url:String
+    },
     dateOfCreate: {type: Date, default: Date.now},
     },
     {
