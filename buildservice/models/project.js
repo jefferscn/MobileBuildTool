@@ -17,6 +17,7 @@ const projectSchema = new mongoose.Schema({
             filename: String,
             url: String
         },
+        appId: String,
     },
     android: {
         svn: {
@@ -35,7 +36,6 @@ const projectSchema = new mongoose.Schema({
         },
     },
     lastRelease: {
-        appId: String,
         ios: {
             taskId: String,
             version: String,

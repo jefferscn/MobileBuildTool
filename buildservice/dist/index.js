@@ -75,8 +75,8 @@
 	var db = _config2.default.db;
 
 	var app = __webpack_require__(6);
-	var debug = __webpack_require__(47)('myapp:server');
-	var http = __webpack_require__(48);
+	var debug = __webpack_require__(48)('myapp:server');
+	var http = __webpack_require__(49);
 	// Connect database
 	(0, _connect2.default)(db.uri, db.options);
 	/**
@@ -289,7 +289,7 @@
 
 	var _pack2 = _interopRequireDefault(_pack);
 
-	var _index = __webpack_require__(44);
+	var _index = __webpack_require__(22);
 
 	function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { default: obj };
@@ -361,9 +361,6 @@
 	                switch (_context2.prev = _context2.next) {
 	                    case 0:
 	                        console.log(cfg);
-	                        console.log(cfg.project);
-	                        console.log(cfg.project.android);
-	                        console.log(cfg.project.icon);
 	                        o = new Object();
 
 	                        o.id = cfg.id;
@@ -538,88 +535,91 @@
 
 	                                        case 63:
 	                                            ;
-	                                        // }
-	                                        // process.chdir('../..');
-	                                        // await emptyDir(workingDir);
+	                                            _context.next = 66;
+	                                            return (0, _updateProject2.default)(cfg.projectId, o.appPlatform, {
+	                                                taskId: cfg.id,
+	                                                version: cfg.appVersion,
+	                                                releaseDate: Date.now()
+	                                            });
 
-	                                        case 64:
+	                                        case 66:
 	                                        case 'end':
 	                                            return _context.stop();
 	                                    }
 	                                }
 	                            }, _callee, this);
 	                        }));
-	                        _context2.prev = 26;
+	                        _context2.prev = 23;
 
 	                        cfg.status.code = 'processing';
-	                        _context2.next = 30;
+	                        _context2.next = 27;
 	                        return cfg.save();
 
-	                    case 30:
-	                        _context2.next = 32;
+	                    case 27:
+	                        _context2.next = 29;
 	                        return o.build();
 
-	                    case 32:
+	                    case 29:
 	                        cfg.status.code = 'done';
-	                        _context2.next = 35;
+	                        _context2.next = 32;
 	                        return cfg.save();
 
-	                    case 35:
-	                        _context2.next = 44;
+	                    case 32:
+	                        _context2.next = 41;
 	                        break;
 
-	                    case 37:
-	                        _context2.prev = 37;
-	                        _context2.t0 = _context2['catch'](26);
+	                    case 34:
+	                        _context2.prev = 34;
+	                        _context2.t0 = _context2['catch'](23);
 
 	                        console.log(_context2.t0);
 	                        logger.error(_context2.t0.message);
 	                        cfg.status.code = 'error';
-	                        _context2.next = 44;
+	                        _context2.next = 41;
 	                        return cfg.save();
 
-	                    case 44:
-	                        _context2.prev = 44;
+	                    case 41:
+	                        _context2.prev = 41;
 
 	                        console.log('finally');
 	                        process.chdir(originDir);
 	                        console.log(process.cwd());
-	                        _context2.next = 50;
+	                        _context2.next = 47;
 	                        return (0, _fileExist2.default)(logFile);
 
-	                    case 50:
+	                    case 47:
 	                        isExist = _context2.sent;
 
 	                        if (isExist) {
-	                            _context2.next = 54;
+	                            _context2.next = 51;
 	                            break;
 	                        }
 
 	                        console.log('logfile not exist!');
 	                        return _context2.abrupt('return');
 
-	                    case 54:
-	                        _context2.next = 56;
+	                    case 51:
+	                        _context2.next = 53;
 	                        return (0, _util.upload)(_config2.default.server.upload, logFile);
 
-	                    case 56:
+	                    case 53:
 	                        uploadLogData = _context2.sent;
 
 	                        console.log(uploadLogData);
 	                        cfg.status.log = uploadLogData.url;
-	                        _context2.next = 61;
+	                        _context2.next = 58;
 	                        return cfg.save();
 
-	                    case 61:
+	                    case 58:
 	                        _fsExtra2.default.remove(logFile);
-	                        return _context2.finish(44);
+	                        return _context2.finish(41);
 
-	                    case 63:
+	                    case 60:
 	                    case 'end':
 	                        return _context2.stop();
 	                }
 	            }
-	        }, _callee2, this, [[26, 37, 44, 63]]);
+	        }, _callee2, this, [[23, 34, 41, 60]]);
 	    }));
 
 	    return function pack(_x) {
@@ -653,11 +653,15 @@
 
 	var _fileExist2 = _interopRequireDefault(_fileExist);
 
+	var _updateProject = __webpack_require__(21);
+
+	var _updateProject2 = _interopRequireDefault(_updateProject);
+
 	var _config = __webpack_require__(3);
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _util = __webpack_require__(21);
+	var _util = __webpack_require__(25);
 
 	function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { default: obj };
@@ -953,69 +957,284 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var updateProject = function () {
+	    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id, platform, obj) {
+	        var project;
+	        return regeneratorRuntime.wrap(function _callee$(_context) {
+	            while (1) {
+	                switch (_context.prev = _context.next) {
+	                    case 0:
+	                        _context.next = 2;
+	                        return _index.Project.findById(id).exec();
+
+	                    case 2:
+	                        project = _context.sent;
+
+	                        project.lastRelease[platform] = obj;
+	                        _context.next = 6;
+	                        return project.save();
+
+	                    case 6:
+	                    case 'end':
+	                        return _context.stop();
+	                }
+	            }
+	        }, _callee, this);
+	    }));
+
+	    return function updateProject(_x, _x2, _x3) {
+	        return _ref.apply(this, arguments);
+	    };
+	}();
+
+	var _index = __webpack_require__(22);
+
+	function _asyncToGenerator(fn) {
+	    return function () {
+	        var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {
+	            function step(key, arg) {
+	                try {
+	                    var info = gen[key](arg);var value = info.value;
+	                } catch (error) {
+	                    reject(error);return;
+	                }if (info.done) {
+	                    resolve(value);
+	                } else {
+	                    return Promise.resolve(value).then(function (value) {
+	                        step("next", value);
+	                    }, function (err) {
+	                        step("throw", err);
+	                    });
+	                }
+	            }return step("next");
+	        });
+	    };
+	}
+
+	exports.default = updateProject;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Task = exports.Project = undefined;
+
+	var _project = __webpack_require__(23);
+
+	var _project2 = _interopRequireDefault(_project);
+
+	var _task = __webpack_require__(24);
+
+	var _task2 = _interopRequireDefault(_task);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.Project = _project2.default;
+	exports.Task = _task2.default;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Project = exports.projectSchema = undefined;
+
+	var _mongoose = __webpack_require__(5);
+
+	var _mongoose2 = _interopRequireDefault(_mongoose);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var projectSchema = new _mongoose2.default.Schema({
+	    name: String,
+	    desc: String,
+	    appId: String,
+	    icon: {
+	        filename: String,
+	        url: String
+	    },
+	    ios: {
+	        svn: {
+	            url: String,
+	            userName: String,
+	            password: String
+	        },
+	        mobileProvision: {
+	            filename: String,
+	            url: String
+	        },
+	        appId: String
+	    },
+	    android: {
+	        svn: {
+	            url: String,
+	            userName: String,
+	            password: String
+	        },
+	        appId: String,
+	        keyStore: {
+	            file: {
+	                filename: String,
+	                url: String
+	            },
+	            userName: String,
+	            password: String
+	        }
+	    },
+	    lastRelease: {
+	        ios: {
+	            taskId: String,
+	            version: String,
+	            releaseDate: Date
+	        },
+	        android: {
+	            taskId: String,
+	            version: String,
+	            releaseDate: Date
+	        }
+	    }
+	}, {
+	    toJSON: {
+	        virtuals: true
+	    }
+	});
+
+	projectSchema.pre();
+
+	var Project = _mongoose2.default.model('Project', projectSchema);
+	exports.default = Project;
+	exports.projectSchema = projectSchema;
+	exports.Project = Project;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Task = exports.taskSchema = undefined;
+
+	var _mongoose = __webpack_require__(5);
+
+	var _mongoose2 = _interopRequireDefault(_mongoose);
+
+	var _project = __webpack_require__(23);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var taskSchema = new _mongoose2.default.Schema({
+	    projectId: String,
+	    project: _project.projectSchema,
+	    version: String,
+	    platform: String,
+	    configuration: String,
+	    release: Boolean,
+	    debug: Boolean,
+	    status: {
+	        code: String,
+	        log: String
+	    },
+	    targetUrl: String,
+	    package: {
+	        filename: String,
+	        url: String
+	    },
+	    dateOfCreate: { type: Date, default: Date.now }
+	}, {
+	    toJSON: {
+	        virtuals: true
+	    }
+	});
+	var Task = _mongoose2.default.model('Task', taskSchema);
+	exports.default = Task;
+	exports.taskSchema = taskSchema;
+	exports.Task = Task;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.upload = exports.Logger = exports.addBaiduMapScript = exports.preparePack = exports.getSvn = exports.projectDirName = exports.changelibConfigJSPath = exports.createCordova = exports.processCode = exports.preparePlatform = exports.addPlugin = exports.buildExtras = exports.addKey = exports.releaseFile = exports.buildApp = exports.emptyDir = exports.addPlatform = undefined;
 
-	var _platform = __webpack_require__(22);
+	var _platform = __webpack_require__(26);
 
 	var _platform2 = _interopRequireDefault(_platform);
 
-	var _emptyDir = __webpack_require__(24);
+	var _emptyDir = __webpack_require__(28);
 
 	var _emptyDir2 = _interopRequireDefault(_emptyDir);
 
-	var _buildApp = __webpack_require__(25);
+	var _buildApp = __webpack_require__(29);
 
 	var _buildApp2 = _interopRequireDefault(_buildApp);
 
-	var _releaseFile = __webpack_require__(26);
+	var _releaseFile = __webpack_require__(30);
 
 	var _releaseFile2 = _interopRequireDefault(_releaseFile);
 
-	var _addKey = __webpack_require__(27);
+	var _addKey = __webpack_require__(31);
 
 	var _addKey2 = _interopRequireDefault(_addKey);
 
-	var _buildExtras = __webpack_require__(28);
+	var _buildExtras = __webpack_require__(32);
 
 	var _buildExtras2 = _interopRequireDefault(_buildExtras);
 
-	var _addPlugin = __webpack_require__(29);
+	var _addPlugin = __webpack_require__(33);
 
 	var _addPlugin2 = _interopRequireDefault(_addPlugin);
 
-	var _preparePlatform = __webpack_require__(31);
+	var _preparePlatform = __webpack_require__(35);
 
 	var _preparePlatform2 = _interopRequireDefault(_preparePlatform);
 
-	var _processCode = __webpack_require__(32);
+	var _processCode = __webpack_require__(36);
 
 	var _processCode2 = _interopRequireDefault(_processCode);
 
-	var _createCordova = __webpack_require__(34);
+	var _createCordova = __webpack_require__(38);
 
 	var _createCordova2 = _interopRequireDefault(_createCordova);
 
-	var _changelibConfigJSPath = __webpack_require__(35);
+	var _changelibConfigJSPath = __webpack_require__(39);
 
 	var _changelibConfigJSPath2 = _interopRequireDefault(_changelibConfigJSPath);
 
-	var _projectDirName = __webpack_require__(36);
+	var _projectDirName = __webpack_require__(40);
 
 	var _projectDirName2 = _interopRequireDefault(_projectDirName);
 
-	var _getSvn = __webpack_require__(37);
+	var _getSvn = __webpack_require__(41);
 
 	var _getSvn2 = _interopRequireDefault(_getSvn);
 
-	var _preparePack = __webpack_require__(39);
+	var _preparePack = __webpack_require__(43);
 
 	var _preparePack2 = _interopRequireDefault(_preparePack);
 
-	var _addBaiduMapScript = __webpack_require__(40);
+	var _addBaiduMapScript = __webpack_require__(44);
 
 	var _addBaiduMapScript2 = _interopRequireDefault(_addBaiduMapScript);
 
-	var _logger = __webpack_require__(41);
+	var _logger = __webpack_require__(45);
 
 	var _logger2 = _interopRequireDefault(_logger);
 
@@ -1046,7 +1265,7 @@
 	exports.upload = _upload2.default;
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1055,7 +1274,7 @@
 	    value: true
 	});
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function addPlatform(platform) {
 	    return new Promise(function (resolve, reject) {
@@ -1071,13 +1290,13 @@
 	exports.default = addPlatform;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	module.exports = require("cordova-lib");
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1107,7 +1326,7 @@
 	exports.default = emptyDir;
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1116,10 +1335,9 @@
 	    value: true
 	});
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function buildApp(platform, appBuildType) {
-	    console.log(appBuildType);
 	    var buildType = appBuildType === 'release' ? true : false;
 	    return new Promise(function (resolve, reject) {
 	        _cordovaLib.cordova.build({
@@ -1137,7 +1355,7 @@
 	exports.default = buildApp;
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1199,7 +1417,7 @@
 	exports.default = releaseFile;
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1263,7 +1481,7 @@
 	exports.default = addKey;
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1295,7 +1513,7 @@
 	exports.default = buildExtras;
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
@@ -1410,7 +1628,7 @@
 
 	var _path2 = _interopRequireDefault(_path);
 
-	var _addPluginReal = __webpack_require__(30);
+	var _addPluginReal = __webpack_require__(34);
 
 	var _addPluginReal2 = _interopRequireDefault(_addPluginReal);
 
@@ -1445,7 +1663,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1454,7 +1672,7 @@
 	    value: true
 	});
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function addPluginReal(plugin, variable) {
 	    return new Promise(function (resolve, reject) {
@@ -1471,7 +1689,7 @@
 	exports.default = addPluginReal;
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1480,7 +1698,7 @@
 	    value: true
 	});
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function preparePlatform(platform) {
 	    return new Promise(function (resolve, reject) {
@@ -1495,7 +1713,7 @@
 	exports.default = preparePlatform;
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1504,7 +1722,7 @@
 	    value: true
 	});
 
-	var _cheerio = __webpack_require__(33);
+	var _cheerio = __webpack_require__(37);
 
 	var _cheerio2 = _interopRequireDefault(_cheerio);
 
@@ -1512,7 +1730,7 @@
 
 	var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { default: obj };
@@ -1573,13 +1791,13 @@
 	exports.default = processCode;
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	module.exports = require("cheerio");
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1588,7 +1806,7 @@
 	    value: true
 	});
 
-	var _cordovaLib = __webpack_require__(23);
+	var _cordovaLib = __webpack_require__(27);
 
 	function createCordova(appName, appNameSpace) {
 	    return new Promise(function (resolve, reject) {
@@ -1603,7 +1821,7 @@
 	exports.default = createCordova;
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1637,7 +1855,7 @@
 	exports.default = changelibConfigJSPath;
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1658,7 +1876,7 @@
 	exports.default = projectDirName;
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1667,7 +1885,7 @@
 	    value: true
 	});
 
-	var _svnSpawn = __webpack_require__(38);
+	var _svnSpawn = __webpack_require__(42);
 
 	var _svnSpawn2 = _interopRequireDefault(_svnSpawn);
 
@@ -1694,13 +1912,13 @@
 	exports.default = getSvn;
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports) {
 
 	module.exports = require("svn-spawn");
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1724,7 +1942,7 @@
 	exports.default = preparePack;
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1737,7 +1955,7 @@
 
 	var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-	var _cheerio = __webpack_require__(33);
+	var _cheerio = __webpack_require__(37);
 
 	var _cheerio2 = _interopRequireDefault(_cheerio);
 
@@ -1790,7 +2008,7 @@
 	exports.default = addBaiduMapScript;
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1799,11 +2017,11 @@
 	    value: true
 	});
 
-	var _winston = __webpack_require__(42);
+	var _winston = __webpack_require__(46);
 
 	var _winston2 = _interopRequireDefault(_winston);
 
-	var _moment = __webpack_require__(43);
+	var _moment = __webpack_require__(47);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -1827,173 +2045,25 @@
 	exports.default = Logger;
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	module.exports = require("winston");
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	module.exports = require("moment");
 
 /***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Task = exports.Project = undefined;
-
-	var _project = __webpack_require__(45);
-
-	var _project2 = _interopRequireDefault(_project);
-
-	var _task = __webpack_require__(46);
-
-	var _task2 = _interopRequireDefault(_task);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.Project = _project2.default;
-	exports.Task = _task2.default;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Project = exports.projectSchema = undefined;
-
-	var _mongoose = __webpack_require__(5);
-
-	var _mongoose2 = _interopRequireDefault(_mongoose);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var projectSchema = new _mongoose2.default.Schema({
-	    name: String,
-	    desc: String,
-	    appId: String,
-	    icon: {
-	        filename: String,
-	        url: String
-	    },
-	    ios: {
-	        svn: {
-	            url: String,
-	            userName: String,
-	            password: String
-	        },
-	        mobileProvision: {
-	            filename: String,
-	            url: String
-	        }
-	    },
-	    android: {
-	        svn: {
-	            url: String,
-	            userName: String,
-	            password: String
-	        },
-	        appId: String,
-	        keyStore: {
-	            file: {
-	                filename: String,
-	                url: String
-	            },
-	            userName: String,
-	            password: String
-	        }
-	    },
-	    lastRelease: {
-	        appId: String,
-	        ios: {
-	            taskId: String,
-	            version: String,
-	            releaseDate: Date
-	        },
-	        android: {
-	            taskId: String,
-	            version: String,
-	            releaseDate: Date
-	        }
-	    }
-	}, {
-	    toJSON: {
-	        virtuals: true
-	    }
-	});
-
-	projectSchema.pre();
-
-	var Project = _mongoose2.default.model('Project', projectSchema);
-	exports.default = Project;
-	exports.projectSchema = projectSchema;
-	exports.Project = Project;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Task = exports.taskSchema = undefined;
-
-	var _mongoose = __webpack_require__(5);
-
-	var _mongoose2 = _interopRequireDefault(_mongoose);
-
-	var _project = __webpack_require__(45);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var taskSchema = new _mongoose2.default.Schema({
-	    projectId: String,
-	    project: _project.projectSchema,
-	    version: String,
-	    platform: String,
-	    configuration: String,
-	    release: Boolean,
-	    status: {
-	        code: String,
-	        log: String
-	    },
-	    targetUrl: String,
-	    package: {
-	        filename: String,
-	        url: String
-	    },
-	    dateOfCreate: { type: Date, default: Date.now }
-	}, {
-	    toJSON: {
-	        virtuals: true
-	    }
-	});
-	var Task = _mongoose2.default.model('Task', taskSchema);
-	exports.default = Task;
-	exports.taskSchema = taskSchema;
-	exports.Task = Task;
-
-/***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 	module.exports = require("debug");
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 	module.exports = require("http");

@@ -118,7 +118,10 @@ export class ProjectShow extends PureComponent{
                 <TextField source="lastRelease.ios.version" label="版本"/>
                 <QRCodeField text={ (record)=>`${baseUrl}/#/projects/${record.id}/show`} source="id" label="二维码"/>
                 <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
-                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
+                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="IOS安装" source = "targetUrl"/>
+                </ReferenceField>
+                <ReferenceField source="lastRelease.android.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
+                    <IOSInstallLink addLabel = {true} label = "" buttonLabel="Android安装" source = "targetUrl"/>
                 </ReferenceField>
             </SimpleShowLayout>
         </Show>)

@@ -5,6 +5,7 @@ import plistGen from './plistGen';
 import unzip from 'unzip';
 import download from './util/download';
 import fileExist from './util/fileExist';
+import updateProject from './util/updateProject';
 import config from '../config';
 import {
     addPlatform,
@@ -133,6 +134,11 @@ async function pack(cfg) {
             cfg.targetUrl = data.url;
             cfg.save();
         };
+        await updateProject(cfg.projectId, o.appPlatform, {
+            taskId: cfg.id,
+            version: cfg.appVersion,
+            releaseDate: Date.now(),
+        })
         // }
         // process.chdir('../..');
         // await emptyDir(workingDir);
