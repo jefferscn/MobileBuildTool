@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 var upload = multer({ dest: 'uploads/' });
 // const baseUrl = "http://1.1.8.34:3001/download?id=";
-const baseUrl = "http://1.1.8.37:3001/download?id=";
+const baseUrl = "./download?id=";
 export default function bind(app, mongoose) {
     const FileRecordSchema = new mongoose.Schema({
         filename: String,
@@ -22,6 +22,7 @@ export default function bind(app, mongoose) {
             var result = {
                 success: true,
                 filename: fr.filename,
+                id: fr.id,
                 url: `${baseUrl}${fr.id}`
             }
             res.json(result).end();

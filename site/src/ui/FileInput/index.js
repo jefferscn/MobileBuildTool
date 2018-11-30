@@ -26,7 +26,8 @@ export default class FileInput extends ImageInput {
         if(json.success){
             var files = [{
                 filename:json.filename,
-                url:json.url
+                url:json.url,
+                id: json.id,
             }];
             this.setState({files});
             this.props.input.onChange(files[0]);

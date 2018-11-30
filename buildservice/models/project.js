@@ -5,7 +5,8 @@ const projectSchema = new mongoose.Schema({
     appId: String,
     icon:{ 
         filename: String,
-        url:String
+        url:String,
+        id:String,
     },
     ios: {
         svn: {
@@ -15,7 +16,8 @@ const projectSchema = new mongoose.Schema({
         },
         mobileProvision: {
             filename: String,
-            url: String
+            url: String,
+            id: String,
         },
         appId: String,
     },
@@ -29,7 +31,8 @@ const projectSchema = new mongoose.Schema({
         keyStore: {
             file: {
                 filename: String,
-                url: String
+                url: String,
+                id: String, 
             },
             userName: String,
             password: String

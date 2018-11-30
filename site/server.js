@@ -323,7 +323,7 @@
 
 	var upload = (0, _multer2.default)({ dest: 'uploads/' });
 	// const baseUrl = "http://1.1.8.34:3001/download?id=";
-	var baseUrl = "http://1.1.8.37:3001/download?id=";
+	var baseUrl = "./download?id=";
 	function bind(app, mongoose) {
 	    var _this = this;
 
@@ -354,6 +354,7 @@
 	                            result = {
 	                                success: true,
 	                                filename: fr.filename,
+	                                id: fr.id,
 	                                url: '' + baseUrl + fr.id
 	                            };
 
@@ -641,7 +642,8 @@
 	    appId: String,
 	    icon: {
 	        filename: String,
-	        url: String
+	        url: String,
+	        id: String
 	    },
 	    ios: {
 	        svn: {
@@ -651,12 +653,14 @@
 	        },
 	        mobileProvision: {
 	            filename: String,
-	            url: String
+	            url: String,
+	            id: String
 	        },
 	        certificate: {
 	            file: {
 	                filename: String,
-	                url: String
+	                url: String,
+	                id: String
 	            },
 	            password: String
 	        },
@@ -672,7 +676,8 @@
 	        keyStore: {
 	            file: {
 	                filename: String,
-	                url: String
+	                url: String,
+	                id: String
 	            },
 	            userName: String,
 	            password: String
@@ -742,7 +747,8 @@
 	    targetUrl: String,
 	    package: {
 	        filename: String,
-	        url: String
+	        url: String,
+	        id: String
 	    },
 	    dateOfCreate: { type: Date, default: Date.now }
 	}, {

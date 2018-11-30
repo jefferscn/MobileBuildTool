@@ -32,7 +32,7 @@ export class ProjectCreate extends PureComponent{
                         <TextInput label="项目名称" source="name" />
                         <TextInput label="项目表述" source="desc" />
                         <TextInput label="应用ID" source="appId"/>
-                        <FileInput url="/upload" source="icon" placeholder="点击上传图标">
+                        <FileInput url="./upload" source="icon" placeholder="点击上传图标">
                             <ImagePreview/>
                         </FileInput>
                     </FormTab>
@@ -41,11 +41,11 @@ export class ProjectCreate extends PureComponent{
                         <TextInput label="项目svn用户" source="ios.svn.userName" />
                         <TextInput label="项目svn密码" source="ios.svn.password" type="password"/>
                         <TextInput label="应用ID" source="ios.appId"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="ios.certificate.file" placeholder="IOS发布证书(.p12)">
+                        <FileInput url="./upload" source="ios.certificate.file" placeholder="IOS发布证书(.p12)">
                             <FilePreview/>
                         </FileInput>
                         <TextInput label="证书密码" source="ios.certificate.password" type="password"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="ios.mobileProvision" placeholder="上传IOS打包用签名文件">
+                        <FileInput url="./upload" source="ios.mobileProvision" placeholder="上传IOS打包用签名文件">
                             <FilePreview/>
                         </FileInput>
                     </FormTab>
@@ -54,7 +54,7 @@ export class ProjectCreate extends PureComponent{
                         <TextInput source="android.svn.userName" />
                         <TextInput source="android.svn.password" type="password"/>
                         <TextInput label="应用ID" source="android.appId"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="android.keyStore.file" placeholder="上传Android打包签名文件">
+                        <FileInput url="./upload" source="android.keyStore.file" placeholder="上传Android打包签名文件">
                             <FilePreview/>
                         </FileInput>
                         <TextInput label="签名用户" source="android.keyStore.userName" />
@@ -75,7 +75,7 @@ export class ProjectEdit extends PureComponent{
                         <TextInput label="项目名称" source="name" />
                         <TextInput label="项目表述" source="desc" />
                         <TextInput label="应用ID" source="appId"/>
-                        <FileInput url="/upload" source="icon" placeholder="点击上传图标">
+                        <FileInput url="./upload" source="icon" placeholder="点击上传图标">
                             <ImagePreview/>
                         </FileInput>
                     </FormTab>
@@ -84,11 +84,11 @@ export class ProjectEdit extends PureComponent{
                         <TextInput label="项目svn用户" source="ios.svn.userName" />
                         <TextInput label="项目svn密码" source="ios.svn.password" type="password"/>
                         <TextInput label="应用ID" source="ios.appId"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="ios.certificate.file" placeholder="IOS发布证书(.p12)">
+                        <FileInput url="./upload" source="ios.certificate.file" placeholder="IOS发布证书(.p12)">
                             <FilePreview/>
                         </FileInput>
                         <TextInput label="证书密码" source="ios.certificate.password" type="password"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="ios.mobileProvision" placeholder="上传IOS打包用签名文件">
+                        <FileInput url="./upload" source="ios.mobileProvision" placeholder="上传IOS打包用签名文件">
                             <FilePreview/>
                         </FileInput>
                     </FormTab>
@@ -97,7 +97,7 @@ export class ProjectEdit extends PureComponent{
                         <TextInput source="android.svn.userName" />
                         <TextInput source="android.svn.password" type="password"/>
                         <TextInput label="应用ID" source="android.appId"/>
-                        <FileInput url="http://1.1.8.25:3001/upload" source="android.keyStore.file" placeholder="上传Android打包签名文件">
+                        <FileInput url="./upload" source="android.keyStore.file" placeholder="上传Android打包签名文件">
                             <FilePreview/>
                         </FileInput>
                         <TextInput label="签名用户" source="android.keyStore.userName" />

@@ -15,7 +15,8 @@ const taskSchema = new mongoose.Schema({
     targetUrl: String,
     package : {
         filename: String,
-        url:String
+        url:String,
+        id: String,
     },
     dateOfCreate: {type: Date, default: Date.now},
     },

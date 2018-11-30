@@ -41,7 +41,7 @@ export class TaskCreate extends PureComponent{
                     <TextInput source="version" label="版本" defaultValue="1.0.0"/>
                     <BooleanInput source="release" label="是否发布" defaultValue ={false}/>
                     <BooleanInput source="debug" label="是否调试版本" defaultValue ={true}/>
-                    <FileInput url="/upload" source="package" placeholder="点击上传发布包">
+                    <FileInput url="./upload" source="package" placeholder="点击上传发布包">
                         <FilePreview/>
                     </FileInput>
                 </SimpleForm>
@@ -65,7 +65,7 @@ export class TaskEdit extends PureComponent{
                     <BooleanInput source="release" label="是否发布" defaultValue ={false}/>
                     <BooleanInput source="debug" label="是否调试版本" defaultValue ={true}/>
                     <DisabledInput source="status.code" label="状态"/>
-                    <FileInput url="/upload" source="package" placeholder="点击上传发布包">
+                    <FileInput url="./upload" source="package" placeholder="点击上传发布包">
                         <FilePreview/>
                     </FileInput>
                 </SimpleForm>
