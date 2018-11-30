@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import fs from 'fs-extra';
 import path from 'path';
+import url from 'url';
 import plistGen from './plistGen';
 import unzip from 'unzip';
 import download from './util/download';
@@ -57,7 +58,8 @@ async function pack(cfg) {
     // console.log(o.svnDir);
     // o.libConfigJSPath = path.resolve(__dirname, 'working', o.svnDir, 'js/lib/config/config.js');
     // console.log('改变后', o.libConfigJSPath);
-    o.package = cfg.package.url;
+    o.package = url.resolve(config.server.baseUrl, cfg.package.url);
+    o.icon= url.resolve(config.server.baseUrl, cfg.project.icon.url);
     o.platform = cfg.platform;
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.appId;
@@ -86,11 +88,12 @@ async function pack(cfg) {
         await addBaiduMapScript(o.htmlPath, o.appPlugin);
         // 解压缩任务中的压缩包
         const file = "tmp.zip";
+        console.log(o.package);
         await download(o.package, file);
         fs.createReadStream(file).pipe(unzip.Extract({ path: o.wwwPath }));
         logger.info('unzip www OK');
         console.log(cfg.project.icon);
-        await download(cfg.project.icon.url, o.iconPath);
+        await download(o.icon, o.iconPath);
         logger.info('download icon OK');
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
@@ -139,9 +142,6 @@ async function pack(cfg) {
             version: cfg.appVersion,
             releaseDate: Date.now(),
         })
-        // }
-        // process.chdir('../..');
-        // await emptyDir(workingDir);
     };
     try {
         cfg.status.code = 'processing';
