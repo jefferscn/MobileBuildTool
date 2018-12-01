@@ -32,7 +32,7 @@
     "request": "^2.81.0",
     "serve-favicon": "^2.3.0",
     "svn-spawn": "^0.1.5",
-    "unzip": "^0.1.11",
+    "unzip2": "^0.2.5",
     "winston": "^2.3.1"
   },
   "devDependencies": {

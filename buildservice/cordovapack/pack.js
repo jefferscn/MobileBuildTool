@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import url from 'url';
 import plistGen from './plistGen';
-import unzip from 'unzip';
+import unzip from 'unzip2';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
