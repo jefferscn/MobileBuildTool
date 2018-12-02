@@ -61,7 +61,7 @@
     "express": "^4.15.2",
     "express-cors": "0.0.3",
     "express-range": "^2.0.1",
-    "mbtmodel": "file:../model",
+    "mbtmodel": "file:./src/ui/model",
     "method-override": "^2.3.8",
     "mongodb": "^2.2.25",
     "mongoose": "^4.9.4",
