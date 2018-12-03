@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "bundle": "webpack --watch",
+    "bundle": "webpack",
     "start:dev": "webpack-dev-server --inline --content-base ./src/client/ --history-api-fallback",
     "start:prod": "webpack && node src/server/app.js"
   },
@@ -32,7 +32,7 @@
     "request": "^2.81.0",
     "serve-favicon": "^2.3.0",
     "svn-spawn": "^0.1.5",
-    "unzip": "^0.1.11",
+    "unzip2": "^0.2.5",
     "winston": "^2.3.1"
   },
   "devDependencies": {
@@ -53,6 +53,7 @@
     "extract-text-webpack-plugin": "^0.8.2",
     "json-loader": "^0.5.7",
     "webpack": "^1.12.2",
+    "webpack-cli": "^3.1.2",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0",
     "webpack-node-externals": "^1.7.2"

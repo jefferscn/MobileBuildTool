@@ -1,4 +1,5 @@
 import React , { PureComponent } from 'react';
+import { required } from 'admin-on-rest';
 import { List, Datagrid, TextInput , Create , Edit , TabbedForm , SimpleForm , ReferenceInput ,
     SelectInput , DisabledInput , Show , SimpleShowLayout , DateField , ShowButton , FunctionField ,
     EditButton , FormTab , TextField , UrlField , ReferenceField , BooleanInput } from 'admin-on-rest/lib/mui';
@@ -31,7 +32,7 @@ export class TaskCreate extends PureComponent{
         return (
             <Create {...this.props}>
                 <SimpleForm>
-                    <ReferenceInput label="项目" allowEmpty source="projectId" reference="projects">
+                    <ReferenceInput label="项目" allowEmpty source="projectId" reference="projects" validate={required}>
                         <SelectInput optionText="name" />
                     </ReferenceInput>
                     <SelectInput source="platform" defaultValue="android" choices={[
@@ -41,7 +42,7 @@ export class TaskCreate extends PureComponent{
                     <TextInput source="version" label="版本" defaultValue="1.0.0"/>
                     <BooleanInput source="release" label="是否发布" defaultValue ={false}/>
                     <BooleanInput source="debug" label="是否调试版本" defaultValue ={true}/>
-                    <FileInput url="./upload" source="package" placeholder="点击上传发布包">
+                    <FileInput url="./upload" source="package" placeholder="点击上传发布包" validate={required}>
                         <FilePreview/>
                     </FileInput>
                 </SimpleForm>
@@ -55,7 +56,7 @@ export class TaskEdit extends PureComponent{
         return (
             <Edit {...this.props}>
                 <SimpleForm>
-                    <ReferenceInput label="项目" allowEmpty source="projectId" reference="projects">
+                    <ReferenceInput label="项目" allowEmpty source="projectId" reference="projects" validate={required}>
                         <SelectInput optionText="name" />
                     </ReferenceInput>
                     <SelectInput source="platform" default="android" choices={[
@@ -65,7 +66,7 @@ export class TaskEdit extends PureComponent{
                     <BooleanInput source="release" label="是否发布" defaultValue ={false}/>
                     <BooleanInput source="debug" label="是否调试版本" defaultValue ={true}/>
                     <DisabledInput source="status.code" label="状态"/>
-                    <FileInput url="./upload" source="package" placeholder="点击上传发布包">
+                    <FileInput url="./upload" source="package" placeholder="点击上传发布包" validate={required}>
                         <FilePreview/>
                     </FileInput>
                 </SimpleForm>

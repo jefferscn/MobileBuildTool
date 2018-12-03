@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import url from 'url';
 import plistGen from './plistGen';
-import unzip from 'unzip';
+import unzip from 'unzip2';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
@@ -113,7 +113,7 @@ async function pack(cfg) {
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
-        await addPlugin(o.appPlugin);
+        await addPlugin(o.appPlugin.join(','));
         logger.info('cordova add plugins OK');
         if (o.appPlatform === 'android') {
             await buildExtras(); // android
