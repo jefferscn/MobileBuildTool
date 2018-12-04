@@ -10,11 +10,11 @@ async function addPlugin(appPlugin) {
     var plugin = appPlugin;
     if (typeof plugin != 'undefined' && plugin.length != 0) {
         //为了兼容以前的"cordova-plugin-app-version,cordova-plugin-camera,cordova-plugin-device"类型
-        try {
-            plugin = JSON.parse(plugin);
-        } catch (e) {
-            plugin = plugin.split(',');
-        }
+        // try {
+        //     plugin = JSON.parse(plugin);
+        // } catch (e) {
+        //     plugin = plugin.split(',');
+        // }
         //分类
         var pluginWithVariable = [];
         var pluginWithoutVariable = [];

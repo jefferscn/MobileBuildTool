@@ -52,14 +52,29 @@ async function pack(cfg) {
     o.iconPath = `${o.appName}/www/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
-    o.appPlugin = [];
+    const defaultPlugins = ["cordova-plugin-app-version",
+        "cordova-plugin-camera",
+        "cordova-plugin-device",
+        "cordova-plugin-file",
+        "cordova-plugin-file-opener2",
+        "cordova-plugin-file-transfer",
+        "cordova-plugin-inappbrowser",
+        "cordova-plugin-whitelist",
+        // "cordova-plugin-x-socialsharing",
+        "phonegap-plugin-barcodescanner",
+        // "ionic-plugin-keyboard",
+        "cordova-plugin-network-information",
+        "cordova-plugin-dialogs",
+        // "cordova-plugin-crosswalk-webview",
+        "com-sarriaroman-photoviewer"];
+    o.appPlugin = defaultPlugins;
     // o.projectPath = `${o.svnDir}/js/lib/`;
     // o.projectDir = `${o.svnDir}/js/lib/${projectDirName(o.projectSvn)}`;
     // console.log(o.svnDir);
     // o.libConfigJSPath = path.resolve(__dirname, 'working', o.svnDir, 'js/lib/config/config.js');
     // console.log('改变后', o.libConfigJSPath);
     o.package = url.resolve(config.server.baseUrl, cfg.package.url);
-    o.icon= url.resolve(config.server.baseUrl, cfg.project.icon.url);
+    o.icon = url.resolve(config.server.baseUrl, cfg.project.icon.url);
     o.platform = cfg.platform;
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.appId;
@@ -98,7 +113,7 @@ async function pack(cfg) {
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
-        await addPlugin(o.appPlugin);
+        await addPlugin(o.appPlugin.join(','));
         logger.info('cordova add plugins OK');
         if (o.appPlatform === 'android') {
             await buildExtras(); // android
@@ -139,7 +154,7 @@ async function pack(cfg) {
         };
         await updateProject(cfg.projectId, o.appPlatform, {
             taskId: cfg.id,
-            version: cfg.appVersion,
+            version: o.appVersion,
             releaseDate: Date.now(),
         })
     };

@@ -42,3 +42,7 @@ buildservice/working
 site/build
 
 buildservice/dist
+
+local_plugin
+
+site/server.js

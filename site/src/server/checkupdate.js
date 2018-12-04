@@ -5,12 +5,13 @@ async function checkUpdate(req, res) {
     const result = {};
     result.projectId = projectId;
     const project = await Project.findById(projectId);
+    console.log(project);
     if (!project) {
         res.state(404).end();
         return;
     }
+    console.log(project.lastRelease);
     if (project.lastRelease) {
-        console.log(project.lastRelease);
         if (project.lastRelease.android && project.lastRelease.android.version) {
             result.androidVersion = project.lastRelease.android.version;
             result.androidLink = `${baseUrl}/#/tasks/${project.lastRelease.android.taskId}/show`;
