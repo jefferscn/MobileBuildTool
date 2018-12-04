@@ -5,7 +5,7 @@ var fs = require('fs');
 var nodeModules = {};
 
 var SERVER_DIR = path.resolve(__dirname, 'server');
-var SERVER_BUILD_DIR = path.resolve(__dirname, 'dist');
+var SERVER_BUILD_DIR = path.resolve(__dirname, './');
 
 // es5 style alternative
 fs.readdirSync(path.resolve(__dirname, 'node_modules'))
@@ -34,6 +34,9 @@ const config = {
     output: {
         path: SERVER_BUILD_DIR,
         filename: 'index.js'
+    },
+    node : {
+        __dirname: false,
     },
     externals: [nodeExternals()],
     module: {

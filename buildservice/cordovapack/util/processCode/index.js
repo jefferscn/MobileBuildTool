@@ -2,7 +2,7 @@ import cheerio from 'cheerio';
 import fs from 'fs-extra';
 import { configparser } from 'cordova-lib';
 
-function processCode(configXML, appVersion, appPackageName, appName, appDescription, appIcon, androidTargetSdkVersion, appPlatform){
+function processCode(configXML, appVersion, appPackageName, appName, appDescription, appIcon, androidTargetSdkVersion, appPlatform, appBuildType){
     var configPath = configXML;
     return new Promise(function (resolve, reject) {
         var conf = new configparser(configPath);
@@ -49,9 +49,9 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
 
                 //content
                 //<content src="index.html"/>
-                // if(appBuildType === 'debug'){
-                //     $('content').attr('src','servicepath.html');
-                // }
+                if(appBuildType === 'debug'){
+                    $('content').attr('src','serverpath.html');
+                }
 
                 fs.writeFile(configXML,$.xml(),function(err,data){
                     if (err) {
