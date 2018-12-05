@@ -26,8 +26,8 @@ import {
     upload,
 } from './util/';
 
-const workingDir = path.resolve(process.cwd(), 'working');
-const originDir = path.resolve(process.cwd(), '.');
+const workingDir = path.resolve(__dirname, 'working');
+const originDir = path.resolve(__dirname, '.');
 
 async function pack(cfg) {
     console.log(cfg);
@@ -172,9 +172,7 @@ async function pack(cfg) {
         cfg.status.code = 'error';
         await cfg.save();
     } finally {
-        console.log('finally');
         process.chdir(originDir);
-        console.log(process.cwd());
         const isExist = await fileExist(logFile);
         if (!isExist) {
             console.log('logfile not exist!');

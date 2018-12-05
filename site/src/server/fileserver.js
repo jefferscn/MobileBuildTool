@@ -1,7 +1,7 @@
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
-var upload = multer({ dest: 'uploads/' });
+var upload = multer({ dest: path.resolve(__dirname, 'uploads/') });
 // const baseUrl = "http://1.1.8.34:3001/download?id=";
 const baseUrl = "./download?id=";
 export default function bind(app, mongoose) {
