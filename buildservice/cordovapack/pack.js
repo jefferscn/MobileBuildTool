@@ -44,7 +44,7 @@ async function pack(cfg) {
     // o.projectSvnUser = cfg.projectSvnUser;
     // o.projectSvnPassword = cfg.projectSvnPassword;
     o.appPlatform = cfg.platform;
-    o.appNameSpace = cfg.appId;
+    o.appNameSpace = cfg.project.appId;
     // o.svnDir = `${o.appName}/www`;
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
@@ -77,7 +77,7 @@ async function pack(cfg) {
     o.icon = url.resolve(config.server.baseUrl, cfg.project.icon.url);
     o.platform = cfg.platform;
     o.appBuildType = cfg.debug ? 'debug' : 'release';
-    o.appPackageName = cfg.appId;
+    o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
     o.appIosMp = cfg.appIosMp;
     // o.yigoVersion = cfg.yigoVersion;

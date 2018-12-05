@@ -41,7 +41,7 @@ buildservice/working
 
 site/build
 
-buildservice/dist
+buildservice/index.js
 
 local_plugin
 

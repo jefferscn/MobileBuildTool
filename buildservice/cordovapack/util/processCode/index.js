@@ -7,6 +7,7 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
     return new Promise(function (resolve, reject) {
         var conf = new configparser(configPath);
         if (appVersion) conf.setVersion(appVersion);
+        console.log(`packageName = ${appPackageName}`);
         if (appPackageName) conf.setPackageName(appPackageName);
         if (appName) conf.setName(appName);
         if (appDescription) conf.setDescription(appDescription);
