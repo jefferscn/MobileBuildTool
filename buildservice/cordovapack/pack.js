@@ -26,8 +26,8 @@ import {
     upload,
 } from './util/';
 
-const workingDir = path.resolve(process.cwd(), 'working');
-const originDir = path.resolve(process.cwd(), '.');
+const workingDir = path.resolve(__dirname, 'working');
+const originDir = path.resolve(__dirname, '.');
 
 async function pack(cfg) {
     console.log(cfg);
@@ -44,7 +44,7 @@ async function pack(cfg) {
     // o.projectSvnUser = cfg.projectSvnUser;
     // o.projectSvnPassword = cfg.projectSvnPassword;
     o.appPlatform = cfg.platform;
-    o.appNameSpace = cfg.appId;
+    o.appNameSpace = cfg.project.appId;
     // o.svnDir = `${o.appName}/www`;
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
@@ -77,7 +77,7 @@ async function pack(cfg) {
     o.icon = url.resolve(config.server.baseUrl, cfg.project.icon.url);
     o.platform = cfg.platform;
     o.appBuildType = cfg.debug ? 'debug' : 'release';
-    o.appPackageName = cfg.appId;
+    o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
     o.appIosMp = cfg.appIosMp;
     // o.yigoVersion = cfg.yigoVersion;
@@ -98,7 +98,7 @@ async function pack(cfg) {
         logger.info('create cordova begin');
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
-        await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform);
+        await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
         logger.info('process config.xml success')
         await addBaiduMapScript(o.htmlPath, o.appPlugin);
         // 解压缩任务中的压缩包
@@ -109,6 +109,8 @@ async function pack(cfg) {
         logger.info('unzip www OK');
         console.log(cfg.project.icon);
         await download(o.icon, o.iconPath);
+        console.log(__dirname);
+        fs.createReadStream(path.resolve(__dirname,'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
         logger.info('download icon OK');
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
@@ -170,9 +172,7 @@ async function pack(cfg) {
         cfg.status.code = 'error';
         await cfg.save();
     } finally {
-        console.log('finally');
         process.chdir(originDir);
-        console.log(process.cwd());
         const isExist = await fileExist(logFile);
         if (!isExist) {
             console.log('logfile not exist!');
