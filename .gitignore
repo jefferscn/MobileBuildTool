@@ -46,3 +46,5 @@ buildservice/index.js
 local_plugin
 
 site/server.js
+
+.DS_Store

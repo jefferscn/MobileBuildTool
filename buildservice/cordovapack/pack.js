@@ -7,6 +7,8 @@ import unzip from 'unzip2';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
+import installCertificate from './util/installCertificate';
+import installMobileProvision from './util/installMobileProvision';
 import config from '../config';
 import {
     addPlatform,
@@ -30,6 +32,7 @@ const workingDir = path.resolve(__dirname, 'working');
 const originDir = path.resolve(__dirname, '.');
 
 async function pack(cfg) {
+
     console.log(cfg);
     const o = new Object();
     o.id = cfg.id;
@@ -79,7 +82,14 @@ async function pack(cfg) {
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
-    o.appIosMp = cfg.appIosMp;
+    // o.appIosMp = cfg.appIosMp;
+    if (o.appPlatform == 'ios') {
+        console.log('IOS 信息')
+        console.log(cfg.project.ios)
+        o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
+        o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
+        o.certificatePwd = cfg.project.ios.certificate.password;
+    }
     // o.yigoVersion = cfg.yigoVersion;
 
     // o.apkLink = cfg.apkDownloadLink;
@@ -95,6 +105,21 @@ async function pack(cfg) {
         await emptyDir(workingDir);
         process.chdir(workingDir);
         logger.info('pack enviroment initialize success');
+
+        if (o.appPlatform == 'ios') {
+
+            logger.info('Install p12 begin ');
+            await installCertificate(o.certificateUrl, o.certificatePwd);
+            logger.info('Install p12 success.');
+
+            logger.info('Install mobile provision begin');
+            const mobileProvision = await installMobileProvision(o.mobileProvisionUrl);
+            logger.info(mobileProvision.TeamIdentifier);
+            logger.info(mobileProvision.UUID);
+            logger.info('Install mobile provision success.');
+            o.appIosMp = mobileProvision;
+        }
+
         logger.info('create cordova begin');
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
@@ -110,12 +135,12 @@ async function pack(cfg) {
         console.log(cfg.project.icon);
         await download(o.icon, o.iconPath);
         console.log(__dirname);
-        fs.createReadStream(path.resolve(__dirname,'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
+        fs.createReadStream(path.resolve(__dirname, 'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
         logger.info('download icon OK');
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
-        await addPlugin(o.appPlugin.join(','));
+        await addPlugin(o.appPlugin);
         logger.info('cordova add plugins OK');
         if (o.appPlatform === 'android') {
             await buildExtras(); // android
@@ -128,9 +153,9 @@ async function pack(cfg) {
         let src = null;
         // process.chdir(originDir);
         if (o.appPlatform === 'ios') {
-            let dest = o.ipaLink;
-            const reg = new RegExp('^(.+)\/(?:[^/]+)$');
-            dest = reg.exec(dest)[1];
+            // let dest = o.ipaLink;
+            // const reg = new RegExp('^(.+)\/(?:[^/]+)$');
+            // dest = reg.exec(dest)[1];
             src = ['platforms/ios/build/device/', o.appName, '.ipa'].join('');
             const data = await upload(config.server.upload, src);
             const ipaUrl = data.url;
