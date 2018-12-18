@@ -82,7 +82,7 @@ async function pack(cfg) {
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
-    // o.appIosMp = cfg.appIosMp;
+    o.appIosMp = {};
     if (o.appPlatform == 'ios') {
         console.log('IOS 信息')
         console.log(cfg.project.ios)

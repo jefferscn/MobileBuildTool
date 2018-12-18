@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
 
 function addKey(appIosMp) {
-    console.log(' 签名信息：' + JSON.stringify(appIosMp));
     return new Promise(function (resolve, reject) {
         var json = {
             "android": {

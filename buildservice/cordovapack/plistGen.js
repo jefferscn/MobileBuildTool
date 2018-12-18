@@ -24,14 +24,14 @@ async function plistGen(o, ipaUrl) {
     console.log('IPA URL:' + ipaUrl)
     var manifestUrl = encodeURI(ipaUrl);
     console.log('manifestUrl:' + manifestUrl);
-    assets[0].url = url.resolve(config.server.baseUrl, manifestUrl);
+    assets[0].url = url.resolve(config.server.downloadIpaBase, manifestUrl);
     metadate['bundle-identifier'] = o.appPackageName;
     metadate['bundle-version'] = o.appVersion;
     metadate['title'] = o.appName;
     console.log(manifestJson);
     var data = plist.build(manifestJson);
     var fileName = 'manifest.plist';
-    await fs.writeFile(fileName, data);
+    fs.writeFileSync(fileName, data);
     const resp = await upload(config.server.upload, fileName);
     return resp.url;
 };
