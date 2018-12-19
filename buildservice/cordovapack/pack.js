@@ -125,7 +125,7 @@ async function pack(cfg) {
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
         console.log(cfg.project.icon);
-        await emptyDir(o.resPath);
+        await emptyDir(`${o.appName}/res`);
         await download(o.icon, o.iconPath);
         console.log(__dirname);
         await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
