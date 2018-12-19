@@ -56,32 +56,22 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
                 $('widget').append(splash);
                 if (appIcon) {
                     const icon = '<platform name="ios">\n' +
-                        '    <!-- iOS 8.0+ -->\n' +
-                        '    <!-- iPhone 6 Plus  -->\n' +
                         '    <icon src="res/ios/icon-60@3x.png" width="180" height="180" />\n' +
-                        '    <!-- iOS 7.0+ -->\n' +
-                        '    <!-- iPhone / iPod Touch  -->\n' +
                         '    <icon src="res/ios/icon-60.png" width="60" height="60" />\n' +
                         '    <icon src="res/ios/icon-60@2x.png" width="120" height="120" />\n' +
-                        '    <!-- iPad -->\n' +
                         '    <icon src="res/ios/icon-76.png" width="76" height="76" />\n' +
                         '    <icon src="res/ios/icon-76@2x.png" width="152" height="152" />\n' +
-                        '    <!-- Spotlight Icon -->\n' +
+                        '    <icon src="res/ios/icon-20.png" width="20" height="20" />\n' +
                         '    <icon src="res/ios/icon-40.png" width="40" height="40" />\n' +
                         '    <icon src="res/ios/icon-40@2x.png" width="80" height="80" />\n' +
-                        '    <!-- iOS 6.1 -->\n' +
-                        '    <!-- iPhone / iPod Touch -->\n' +
                         '    <icon src="res/ios/icon-57.png" width="57" height="57" />\n' +
                         '    <icon src="res/ios/icon-57@2x.png" width="114" height="114" />\n' +
-                        '    <!-- iPad -->\n' +
                         '    <icon src="res/ios/icon-72.png" width="72" height="72" />\n' +
                         '    <icon src="res/ios/icon-72@2x.png" width="144" height="144" />\n' +
-                        '    <!-- iPad Pro -->\n' +
                         '    <icon src="res/ios/icon-167.png" width="167" height="167" />\n' +
-                        '    <!-- iPhone Spotlight and Settings Icon -->\n' +
                         '    <icon src="res/ios/icon-29.png" width="29" height="29" />\n' +
                         '    <icon src="res/ios/icon-29@2x.png" width="58" height="58" />\n' +
-                        '    <!-- iPad Spotlight and Settings Icon -->\n' +
+                        '    <icon src="res/ios/icon-29@3x.png" width="87" height="87" />\n' +
                         '    <icon src="res/ios/icon-50.png" width="50" height="50" />\n' +
                         '    <icon src="res/ios/icon-50@2x.png" width="100" height="100" />\n' +
                         '</platform>\n' +
