@@ -1,7 +1,6 @@
 import cheerio from 'cheerio';
 import fs from 'fs-extra';
 import { configparser } from 'cordova-lib';
-import createIcons from 'createicon';
 
 function processCode(configXML, appVersion, appPackageName, appName, appDescription, appIcon, androidTargetSdkVersion, appPlatform, appBuildType) {
     var configPath = configXML;
@@ -56,9 +55,6 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
                     '</platform>\n';
                 $('widget').append(splash);
                 if (appIcon) {
-                    const configDir = path.dirname(configPath);
-                    const iconRes = path.resolve(configDir, `res/${appPlatform}`);
-                    await createIcons(appPlatform, appIcon, iconRes);
                     const icon = '<platform name="ios">\n' +
                         '    <!-- iOS 8.0+ -->\n' +
                         '    <!-- iPhone 6 Plus  -->\n' +
@@ -97,7 +93,6 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
                         '    <icon src="res/android/icon-xxhdpi.png" density="xxhdpi" />\n' +
                         '    <icon src="res/android/icon-xxxhdpi.png" density="xxxhdpi" />\n' +
                         '</platform>\n';
-                    //     conf.addElement('icon', { 'src': appIcon });
                     $('widget').append(icon);
                 }
                 //content

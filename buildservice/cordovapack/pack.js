@@ -4,6 +4,7 @@ import path from 'path';
 import url from 'url';
 import plistGen from './plistGen';
 import unzip from 'unzip2';
+import createIcons from 'createicon';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
@@ -52,7 +53,6 @@ async function pack(cfg) {
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
     o.wwwPath = `${o.appName}/www`;
-    o.resPath = `${o.appName}/res`;
     o.iconPath = `${o.appName}/res/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
@@ -128,6 +128,7 @@ async function pack(cfg) {
         await emptyDir(o.resPath);
         await download(o.icon, o.iconPath);
         console.log(__dirname);
+        await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
         logger.info('download icon OK');
         await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
         logger.info('process config.xml success')
