@@ -52,7 +52,8 @@ async function pack(cfg) {
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
     o.wwwPath = `${o.appName}/www`;
-    o.iconPath = `${o.appName}/www/app.icon`;
+    o.resPath = `${o.appName}/res`;
+    o.iconPath = `${o.appName}/res/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
     const defaultPlugins = ["cordova-plugin-app-version",
@@ -123,6 +124,11 @@ async function pack(cfg) {
         logger.info('create cordova begin');
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
+        console.log(cfg.project.icon);
+        await emptyDir(o.resPath);
+        await download(o.icon, o.iconPath);
+        console.log(__dirname);
+        logger.info('download icon OK');
         await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
         logger.info('process config.xml success')
         await addBaiduMapScript(o.htmlPath, o.appPlugin);
@@ -132,11 +138,8 @@ async function pack(cfg) {
         await download(o.package, file);
         fs.createReadStream(file).pipe(unzip.Extract({ path: o.wwwPath }));
         logger.info('unzip www OK');
-        console.log(cfg.project.icon);
-        await download(o.icon, o.iconPath);
-        console.log(__dirname);
         fs.createReadStream(path.resolve(__dirname, 'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
-        logger.info('download icon OK');
+        logger.info('copy serverpath.html OK');
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');

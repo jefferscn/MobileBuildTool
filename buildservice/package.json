@@ -17,6 +17,7 @@
     "body-parser": "^1.15.2",
     "cheerio": "^1.0.0-rc.2",
     "cordova-lib": "^6.0.0",
+    "createicon": "0.0.1",
     "debug": "~2.2.0",
     "express": "^4.14.0",
     "fs-extra": "^1.0.0",
