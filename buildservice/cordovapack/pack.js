@@ -85,8 +85,6 @@ async function pack(cfg) {
     o.appVersion = cfg.version;
     o.appIosMp = {};
     if (o.appPlatform == 'ios') {
-        console.log('IOS 信息')
-        console.log(cfg.project.ios)
         o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
         o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
         o.certificatePwd = cfg.project.ios.certificate.password;
