@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import {projectSchema} from './project';
+import { projectSchema } from './project';
+import { frameworkSchema } from './framework';
 const taskSchema = new mongoose.Schema({
     projectId: String,
     project: projectSchema,
@@ -7,24 +8,29 @@ const taskSchema = new mongoose.Schema({
     platform: String,
     configuration: String,
     release: Boolean,
-    debug: Boolean,
+    frameworkId:String,
+    framework: frameworkSchema,
+    debug:  {
+        type: Boolean,
+        default: true,
+    },
     status: {
         code: String,
-        log: String,
+        log: String
     },
     targetUrl: String,
     package : {
         filename: String,
         url:String,
-        id: String,
+        id:String,
     },
-    dateOfCreate: {type: Date, default: Date.now},
-    },
-    {
-        toJSON: {
-            virtuals: true
-        }
-    });
+    dateOfCreate: { type: Date, default: Date.now },
+},
+{
+    toJSON:{
+        virtuals:true
+    }
+});
 const Task = mongoose.model('Task', taskSchema);
 export default Task;
 export {

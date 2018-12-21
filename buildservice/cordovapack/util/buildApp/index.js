@@ -1,7 +1,7 @@
 import { cordova } from 'cordova-lib';
 
 function buildApp(platform, appBuildType) {
-    var buildType = appBuildType === 'release' ? true : false;
+    var buildType = appBuildType === 'release' ? true : platform == 'ios';
     return new Promise(function (resolve, reject) {
         cordova.build({
             platforms: [platform],

@@ -4,9 +4,12 @@ import path from 'path';
 import url from 'url';
 import plistGen from './plistGen';
 import unzip from 'unzip2';
+import createIcons from 'createicon';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
+import installCertificate from './util/installCertificate';
+import installMobileProvision from './util/installMobileProvision';
 import config from '../config';
 import {
     addPlatform,
@@ -30,6 +33,7 @@ const workingDir = path.resolve(__dirname, 'working');
 const originDir = path.resolve(__dirname, '.');
 
 async function pack(cfg) {
+
     console.log(cfg);
     const o = new Object();
     o.id = cfg.id;
@@ -49,7 +53,7 @@ async function pack(cfg) {
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
     o.wwwPath = `${o.appName}/www`;
-    o.iconPath = `${o.appName}/www/app.icon`;
+    o.iconPath = `${o.appName}/res/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
     const defaultPlugins = ["cordova-plugin-app-version",
@@ -79,7 +83,12 @@ async function pack(cfg) {
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
-    o.appIosMp = cfg.appIosMp;
+    o.appIosMp = {};
+    if (o.appPlatform == 'ios') {
+        o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
+        o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
+        o.certificatePwd = cfg.project.ios.certificate.password;
+    }
     // o.yigoVersion = cfg.yigoVersion;
 
     // o.apkLink = cfg.apkDownloadLink;
@@ -95,9 +104,28 @@ async function pack(cfg) {
         await emptyDir(workingDir);
         process.chdir(workingDir);
         logger.info('pack enviroment initialize success');
+
+        if (o.appPlatform == 'ios') {
+
+            logger.info('Install p12 begin ');
+            await installCertificate(o.certificateUrl, o.certificatePwd);
+            logger.info('Install p12 success.');
+
+            logger.info('Install mobile provision begin');
+            const mobileProvision = await installMobileProvision(o.mobileProvisionUrl);
+            logger.info('Install mobile provision success.');
+            o.appIosMp = mobileProvision;
+        }
+
         logger.info('create cordova begin');
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
+        console.log(cfg.project.icon);
+        await emptyDir(`${o.appName}/res`);
+        await download(o.icon, o.iconPath);
+        console.log(__dirname);
+        await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
+        logger.info('download icon OK');
         await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
         logger.info('process config.xml success')
         await addBaiduMapScript(o.htmlPath, o.appPlugin);
@@ -107,11 +135,8 @@ async function pack(cfg) {
         await download(o.package, file);
         fs.createReadStream(file).pipe(unzip.Extract({ path: o.wwwPath }));
         logger.info('unzip www OK');
-        console.log(cfg.project.icon);
-        await download(o.icon, o.iconPath);
-        console.log(__dirname);
-        fs.createReadStream(path.resolve(__dirname,'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
-        logger.info('download icon OK');
+        fs.createReadStream(path.resolve(__dirname, 'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
+        logger.info('copy serverpath.html OK');
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
@@ -128,9 +153,9 @@ async function pack(cfg) {
         let src = null;
         // process.chdir(originDir);
         if (o.appPlatform === 'ios') {
-            let dest = o.ipaLink;
-            const reg = new RegExp('^(.+)\/(?:[^/]+)$');
-            dest = reg.exec(dest)[1];
+            // let dest = o.ipaLink;
+            // const reg = new RegExp('^(.+)\/(?:[^/]+)$');
+            // dest = reg.exec(dest)[1];
             src = ['platforms/ios/build/device/', o.appName, '.ipa'].join('');
             const data = await upload(config.server.upload, src);
             const ipaUrl = data.url;

@@ -27,7 +27,8 @@ export default (DEBUG, PATH, PORT = 3000) => ({
             {
                 test: /\.jsx?$/,
                 include: [
-                    path.resolve("src")
+                    path.resolve("src"),
+                    path.resolve("node_modules/punycode/")
                 ],
                 exclude: [
                 ],
