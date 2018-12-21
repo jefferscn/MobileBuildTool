@@ -88,6 +88,7 @@ async function pack(cfg) {
         o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
         o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
         o.certificatePwd = cfg.project.ios.certificate.password;
+        o.appPlugin.push('iOS-ExitApp');
     }
     // o.yigoVersion = cfg.yigoVersion;
 
