@@ -122,7 +122,16 @@ var task = app.task = restful.model('tasks', TaskSchema)
             req.body.framework = pp;
             next();
         }
-    }, 'delete', {
+    }, 'delete',{
+        method:'put',
+        before:(req, res, next) => {
+            if(req.body.repackage){
+                req.body.status = { code: 'waiting' };
+            }
+            delete req.body.repackage;
+            next();
+        }
+    }, {
         method: 'get',
         before: queryTransform,
         after: totalRange

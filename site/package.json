@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "admin-on-rest": "^0.9.4",
+    "admin-on-rest": "^1.4.1",
     "babel-core": "^6.5.2",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.3",
@@ -46,6 +46,7 @@
     "postcss-loader": "^0.8.1",
     "postcss-url": "^5.1.1",
     "precss": "^1.4.0",
+    "react-dom": "^15.6.1",
     "run-sequence": "^1.1.5",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",

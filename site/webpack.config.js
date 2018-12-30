@@ -10,7 +10,7 @@ export default (DEBUG, PATH, PORT = 3000) => ({
     ]),
 
     output: {
-        path: '/',
+        path: path.resolve('./'),
         filename: "main.js",
         publicPath: "/"
     },
