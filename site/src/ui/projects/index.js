@@ -16,6 +16,7 @@ export class ProjectList extends PureComponent{
                 {/* <TextField source="name" /> */}
                 <TextField source="desc" />
                 <TextField source="lastRelease.ios.version" label="IOS版本"/>
+                <TextField source="lastRelease.android.version" label="Android版本"/>
                 <EditButton />
                 <ShowButton/>
             </Datagrid>
@@ -121,7 +122,7 @@ export class ProjectShow extends PureComponent{
                 <ReferenceField source="lastRelease.ios.taskId" reference="tasks" addLabel={false} elStyle={{textDecoration: 'none'}}>
                     <IOSInstallLink addLabel = {true} label = "" buttonLabel="IOS安装" source = "targetUrl"/>
                 </ReferenceField>
-                <ReferenceField source="lastRelease.android.taskId" reference="tasks" addLabel={false} elStyle={{ textDecoration: 'none' }} style={{ paddingTop: 10 }}>
+                <ReferenceField style={{paddingTop:10}} source="lastRelease.android.taskId" reference="tasks" addLabel={false} elStyle={{textDecoration: 'none'}}>
                     <IOSInstallLink addLabel = {true} label = "" buttonLabel="Android安装" source = "targetUrl"/>
                 </ReferenceField>
             </SimpleShowLayout>

@@ -72,6 +72,11 @@ async function pack(cfg) {
         // "cordova-plugin-crosswalk-webview",
         "com-sarriaroman-photoviewer"];
     o.appPlugin = defaultPlugins;
+    if (o.appPlatform == 'ios') {
+        o.appPlugin.push('cordova-plugin-geoloaction-baidu?API_KEY=tsIG8xQr1r3kuHIfcFOfGfGgWaNkXURv');
+    }else{
+        o.appPlugin.push('cordova-plugin-geoloaction-baidu-android?API_KEY=4z5k9DG1QUIBWF9yEfb4Qho6');
+    }
     // o.projectPath = `${o.svnDir}/js/lib/`;
     // o.projectDir = `${o.svnDir}/js/lib/${projectDirName(o.projectSvn)}`;
     // console.log(o.svnDir);
@@ -88,7 +93,7 @@ async function pack(cfg) {
         o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
         o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
         o.certificatePwd = cfg.project.ios.certificate.password;
-        o.appPlugin.push('ios-exitapp');
+        o.appPlugin.push('org.frd49.cordova.exitapp');
     }
     // o.yigoVersion = cfg.yigoVersion;
 

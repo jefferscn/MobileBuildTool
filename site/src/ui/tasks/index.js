@@ -80,8 +80,9 @@ export class TaskShow extends PureComponent{
         return (<Show {...this.props} hasEdit={false} hasList={false}>
             <SimpleShowLayout>
                 <TextField label="项目" source="project.name" />
-                <TextField source="platform" label="平台"/>
+                <FunctionField label="平台" render={record => record.platform === 'ios'?'IOS':'Android'} />
                 <TextField source="version" label="版本"/>
+                <FunctionField label="类型" render={record => record.debug ?'调试':'发布'} />
                 <QRCodeField text={ (record)=>`${baseUrl}/#/tasks/${record.id}/show`} source="id" label="二维码"/>
                 <IOSInstallLink addLabel = {true} label = "" buttonLabel="安装" source = "targetUrl"/>
             </SimpleShowLayout>

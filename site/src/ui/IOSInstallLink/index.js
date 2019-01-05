@@ -21,7 +21,11 @@ export default class IOSInstallLink extends PureComponent {
     }
     render() {
         const { source, record = {}, elStyle } = this.props;
-        const targetUrl = url.resolve(baseUrl, get(record, source));
+        const sourceUrl = get(record, source);
+        if(!sourceUrl){
+            return null;
+        }
+        const targetUrl = url.resolve(baseUrl, sourceUrl);
         console.log(targetUrl)
         if (get(record, 'platform') === 'ios') {
             return <a onClick={this.onClick} href={'itms-services://?action=download-manifest&amp;url=' + encodeURIComponent(targetUrl)} style={style}>
