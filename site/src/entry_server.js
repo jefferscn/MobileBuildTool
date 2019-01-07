@@ -44,6 +44,28 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
 
+const taskQueryTransform = async (req, res, next) => {
+    if (req.query.filter) {
+        const filter = JSON.parse(req.query.filter);
+        if (filter.projectId) {
+            req.query.projectId__equals = filter.projectId
+        }
+        if (filter.platform && 'all' != filter.platform) {
+            req.query.platform__equals = filter.platform
+        }
+        if (filter.version) {
+            req.query.version__regex = `/^${filter.version}/i`
+        }
+        if (filter.is_debug != undefined) {
+            req.query.debug__equals = filter.is_debug
+        }
+        if (filter.status_code && 'all' != filter.status_code) {
+            req.query['status.code__equals'] = filter.status_code
+        }
+    }
+    console.log(req.query);
+    queryTransform(req, res, next);
+}
 
 const queryTransform = (req, res, next) => {
     if (req.query.sort) {
@@ -124,7 +146,7 @@ var task = app.task = restful.model('tasks', TaskSchema)
         }
     }, 'delete', {
         method: 'get',
-        before: queryTransform,
+        before: taskQueryTransform,
         after: totalRange
     }])
     .includeSchema(false);

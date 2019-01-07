@@ -2,7 +2,7 @@ import React , { PureComponent } from 'react';
 import { required } from 'admin-on-rest';
 import { List, Datagrid, TextInput , Create , Edit , TabbedForm , SimpleForm , ReferenceInput ,
     SelectInput , DisabledInput , Show , SimpleShowLayout , DateField , ShowButton , FunctionField ,
-    EditButton , FormTab , TextField , UrlField , ReferenceField , BooleanInput } from 'admin-on-rest/lib/mui';
+    EditButton , FormTab , TextField , UrlField , ReferenceField , BooleanInput, Filter } from 'admin-on-rest/lib/mui';
 import IOSInstallLink from '../IOSInstallLink';
 import baseUrl from '../../server/baseUrl';
 import FileInput , { FilePreview } from '../FileInput'
@@ -11,9 +11,34 @@ import ProjectReferenceField from '../projects/ProjectReferenceField';
 import get from 'lodash.get';
 const LogField= ({ source, record = {} ,labelSource}) => <a href={`javascript:window.open("${get(record,source)}","log","width=600,height=400")`}>{get(record, labelSource)}</a>; 
 
+const TaskFilter = (props) => (
+    <Filter {...props}>
+        <ReferenceInput label="项目" source="projectId" reference="projects">
+            <SelectInput optionText="name" />
+        </ReferenceInput>
+        <SelectInput label="平台" source="platform" choices={[
+            { id: 'all', name: '所有' },
+            { id: 'android', name: 'Android' },
+            { id: 'ios', name: 'IOS' }
+        ]} />
+        <TextInput label="版本" source="version" />
+        <BooleanInput label="是否调试" source="is_debug" defaultValue={false} />
+        <SelectInput label="状态" source="status_code" choices={[
+            { id: 'all', name: '所有' },
+            { id: 'waiting', name: 'waiting' },
+            { id: 'processing', name: 'processing' },
+            { id: 'done', name: 'done' },
+            { id: 'error', name: 'error' }
+        ]}/>
+    </Filter>
+);
+
 export class TaskList extends PureComponent{
     render(){
-        return (<List {...this.props} sort={{ field: 'dateOfCreate', order: 'DESC' }}>
+        return (<List {...this.props} 
+            sort={{ field: 'dateOfCreate', order: 'DESC' }}
+            filters={<TaskFilter />}
+        >
             <Datagrid>
                 <ProjectReferenceField label="项目" source="projectId" reference="projects">
                 </ProjectReferenceField>
