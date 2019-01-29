@@ -90,7 +90,13 @@ function processCode(configXML, appVersion, appPackageName, appName, appDescript
                 if (appBuildType === 'debug') {
                     $('content').attr('src', 'serverpath.html');
                 }
-
+                const max_aspect = '<platform name="android">\n' +
+                    '    <config-file parent="/manifest/application" target="AndroidManifest.xml">\n' +
+                    '        <meta-data android:name="android.max_aspect" android:value="2.1" />\n' +
+                    '    </config-file>\n' +
+                    '    </platform>\n';
+                $('widget').attr('xmlns:android', 'http://schemas.android.com/apk/res/android');
+                $('widget').append(max_aspect);
                 fs.writeFile(configXML, $.xml(), function (err, data) {
                     if (err) {
                         reject(new Error(err))
