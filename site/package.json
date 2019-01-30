@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "gulp buildserver",
-    "start": "gulp serve",
+    "server:dist": "gulp buildserver:dist",
+    "start": "gulp startrelease",
     "build": "gulp dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
