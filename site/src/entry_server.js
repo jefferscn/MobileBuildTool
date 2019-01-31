@@ -148,6 +148,15 @@ var task = app.task = restful.model('tasks', TaskSchema)
         method: 'get',
         before: taskQueryTransform,
         after: totalRange
+    }, {
+        method: 'put',
+        before: async (req, res, next) => {
+            if(req.body.repackage){
+                req.body.status.code = 'waiting';
+            }
+            delete req.body.repackage
+            next();
+        }
     }])
     .includeSchema(false);
 
