@@ -53,7 +53,9 @@ async function pack(cfg) {
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
     o.wwwPath = `${o.appName}/www`;
-    o.iconPath = `${o.appName}/res/app.icon`;
+    o.resPath = `${o.appName}/res`;
+    o.hooksPath = `${o.appName}/hooks`;
+    o.iconPath = `${o.resPath}/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
     const defaultPlugins = ["cordova-plugin-app-version",
@@ -127,22 +129,34 @@ async function pack(cfg) {
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
         console.log(cfg.project.icon);
-        await emptyDir(`${o.appName}/res`);
+        await emptyDir(o.resPath);
+        await emptyDir(o.hooksPath);
+        await emptyDir(o.wwwPath);
+        logger.info('download icon begin');
         await download(o.icon, o.iconPath);
         console.log(__dirname);
-        await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
+        if (o.appPlatform == 'ios') {
+            await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
+        }
         logger.info('download icon OK');
         await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
-        logger.info('process config.xml success')
-        await addBaiduMapScript(o.htmlPath, o.appPlugin);
+        logger.info('process config.xml success');
+
         // 解压缩任务中的压缩包
         const file = "tmp.zip";
         console.log(o.package);
         await download(o.package, file);
-        fs.createReadStream(file).pipe(unzip.Extract({ path: o.wwwPath }));
+        await extract(file, o.wwwPath);
         logger.info('unzip www OK');
         fs.createReadStream(path.resolve(__dirname, 'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
         logger.info('copy serverpath.html OK');
+        if (o.appPlatform == 'android') {
+            logger.info('add hook begin');
+            fs.createReadStream(path.resolve(__dirname, './cordovapack/hooks/android.max_aspect.js')).pipe(fs.createWriteStream(path.resolve(o.hooksPath,'android.max_aspect.js')));
+            logger.info('add hook OK');
+        }
+        // await addBaiduMapScript(o.htmlPath, o.appPlugin);
+
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
@@ -215,5 +229,16 @@ async function pack(cfg) {
         await cfg.save();
         fs.remove(logFile);
     }
+}
+const extract = (file, dir) => {
+    return new Promise((resolve, reject) => {
+        var res = fs.createReadStream(file).pipe(unzip.Extract({ path: dir }));
+        res.on('error', (error) => {
+            reject(error);
+        });
+        res.on('close', () => {
+            resolve();
+        });
+    });
 }
 export default pack;
