@@ -75,7 +75,7 @@ async function pack(cfg) {
         "com-sarriaroman-photoviewer"];
     o.appPlugin = defaultPlugins;
     if (o.appPlatform == 'ios') {
-        o.appPlugin.push('cordova-plugin-geoloaction-baidu?API_KEY=tsIG8xQr1r3kuHIfcFOfGfGgWaNkXURv');
+        o.appPlugin.push('cordova-plugin-geolocation-baidu?API_KEY=tsIG8xQr1r3kuHIfcFOfGfGgWaNkXURv');
     }else{
         o.appPlugin.push('cordova-plugin-geoloaction-baidu-android?API_KEY=4z5k9DG1QUIBWF9yEfb4Qho6');
     }
