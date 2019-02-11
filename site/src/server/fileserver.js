@@ -16,7 +16,7 @@ export default function bind(app, mongoose) {
         var fr = new FileRecord();
         fr.filename = req.file.originalname;
         fr.mimetype = req.file.mimetype;
-        fr.path = req.file.path;
+        fr.path = path.relative(__dirname, req.file.path);
         try {
             await fr.save();
             var result = {
@@ -28,8 +28,8 @@ export default function bind(app, mongoose) {
             res.json(result).end();
         } catch (ex) {
             res.json({
-                success:false,
-                message:ex.message
+                success: false,
+                message: ex.message
             })
         }
     });
