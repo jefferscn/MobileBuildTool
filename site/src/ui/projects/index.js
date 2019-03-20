@@ -7,6 +7,7 @@ import IOSInstallLink from '../IOSInstallLink';
 import baseUrl from '../../server/baseUrl';
 import QRCodeField from '../QRCodeField';
 import ProjectName from './ProjectName';
+import PluginInput from '../plugins';
 
 export class ProjectList extends PureComponent{
     render(){
@@ -61,6 +62,9 @@ export class ProjectCreate extends PureComponent{
                         <TextInput label="签名用户" source="android.keyStore.userName" />
                         <TextInput label="签名密码" source="android.keyStore.password" type="password"/>
                     </FormTab>
+                    <FormTab label="插件">
+                        <PluginInput source="plugins" />
+                    </FormTab>
                 </TabbedForm>
             </Create>
         )
@@ -103,6 +107,9 @@ export class ProjectEdit extends PureComponent{
                         </FileInput>
                         <TextInput label="签名用户" source="android.keyStore.userName" />
                         <TextInput label="签名密码" source="android.keyStore.password" type="password"/>
+                    </FormTab>
+                    <FormTab label="插件">
+                        <PluginInput source="plugins" />
                     </FormTab>
                 </TabbedForm>
             </Edit>

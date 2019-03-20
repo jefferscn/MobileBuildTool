@@ -46,6 +46,10 @@ const projectSchema = new mongoose.Schema({
             password:String
         },
     },
+    plugins: [{
+        platform:String,
+        url:String
+    }],
     lastRelease: {
         ios: {
             taskId:String,    //taskId

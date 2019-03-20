@@ -74,10 +74,11 @@ async function pack(cfg) {
         // "cordova-plugin-crosswalk-webview",
         "com-sarriaroman-photoviewer"];
     o.appPlugin = defaultPlugins;
-    if (o.appPlatform == 'ios') {
-        o.appPlugin.push('cordova-plugin-geolocation-baidu?API_KEY=tsIG8xQr1r3kuHIfcFOfGfGgWaNkXURv');
-    }else{
-        o.appPlugin.push('cordova-plugin-geoloaction-baidu-android?API_KEY=4z5k9DG1QUIBWF9yEfb4Qho6');
+    if (cfg.project.plugins) {
+        const plugins = cfg.project.plugins.filter(v => v && (!v.platform || v.platform == o.appPlatform));
+        for (let i = 0; i < plugins.length; i++) {
+            o.appPlugin.push(plugins[i].url);
+        }
     }
     // o.projectPath = `${o.svnDir}/js/lib/`;
     // o.projectDir = `${o.svnDir}/js/lib/${projectDirName(o.projectSvn)}`;
@@ -152,7 +153,7 @@ async function pack(cfg) {
         logger.info('copy serverpath.html OK');
         if (o.appPlatform == 'android') {
             logger.info('add hook begin');
-            fs.createReadStream(path.resolve(__dirname, './cordovapack/hooks/android.max_aspect.js')).pipe(fs.createWriteStream(path.resolve(o.hooksPath,'android.max_aspect.js')));
+            fs.createReadStream(path.resolve(__dirname, './cordovapack/hooks/android.max_aspect.js')).pipe(fs.createWriteStream(path.resolve(o.hooksPath, 'android.max_aspect.js')));
             logger.info('add hook OK');
         }
         // await addBaiduMapScript(o.htmlPath, o.appPlugin);
