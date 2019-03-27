@@ -67,7 +67,7 @@ async function pack(cfg) {
         "cordova-plugin-inappbrowser",
         "cordova-plugin-whitelist",
         // "cordova-plugin-x-socialsharing",
-        "phonegap-plugin-barcodescanner",
+        // "phonegap-plugin-barcodescanner",
         // "ionic-plugin-keyboard",
         "cordova-plugin-network-information",
         "cordova-plugin-dialogs",
