@@ -38,7 +38,9 @@ Poll.prototype = {
                 this.busy = false;
             })
             .catch((err) => {
-                console.log(err);
+                if(err != 'No waiting task.'){
+                    console.log(err);
+                }
                 this.busy = false;
             });
     },

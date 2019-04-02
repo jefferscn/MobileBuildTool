@@ -3,9 +3,9 @@ const projectSchema = new mongoose.Schema({
     name: String,
     desc: String,
     appId: String,
-    icon:{ 
+    icon: {
         filename: String,
-        url:String,
+        url: String,
         id: String,
     },
     ios: {
@@ -16,11 +16,11 @@ const projectSchema = new mongoose.Schema({
         },
         mobileProvision: {
             filename: String,
-            url:String,
+            url: String,
             id: String,
         },
-        certificate:{
-            file:{
+        certificate: {
+            file: {
                 filename: String,
                 url: String,
                 id: String,
@@ -37,32 +37,36 @@ const projectSchema = new mongoose.Schema({
         },
         appId: String,
         keyStore: {
-            file:{
+            file: {
                 filename: String,
-                url:String,
-                id:String,
+                url: String,
+                id: String,
             },
-            userName:String,
-            password:String
+            userName: String,
+            password: String
         },
     },
+    plugins: [{
+        platform:String,
+        url:String
+    }],
     lastRelease: {
         ios: {
-            taskId:String,    //taskId
-            version:String,
-            releaseDate:Date
+            taskId: String,    //taskId
+            version: String,
+            releaseDate: Date
         },
-        android:  {
-            taskId:String,    //taskId
-            version:String,
-            releaseDate:Date
+        android: {
+            taskId: String,    //taskId
+            version: String,
+            releaseDate: Date
         },
     },
-},{
-    toJSON:{
-        virtuals:true
-    }
-});
+}, {
+        toJSON: {
+            virtuals: true
+        }
+    });
 
 const Project = mongoose.model('Project', projectSchema);
 export default Project;

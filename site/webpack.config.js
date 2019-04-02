@@ -10,7 +10,7 @@ export default (DEBUG, PATH, PORT = 3000) => ({
     ]),
 
     output: {
-        path: '/',
+        path: path.resolve('./'),
         filename: "main.js",
         publicPath: "/"
     },
@@ -27,7 +27,8 @@ export default (DEBUG, PATH, PORT = 3000) => ({
             {
                 test: /\.jsx?$/,
                 include: [
-                    path.resolve("src")
+                    path.resolve("src"),
+                    path.resolve("node_modules/punycode/")
                 ],
                 exclude: [
                 ],

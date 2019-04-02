@@ -4,9 +4,12 @@ import path from 'path';
 import url from 'url';
 import plistGen from './plistGen';
 import unzip from 'unzip2';
+import createIcons from 'createicon';
 import download from './util/download';
 import fileExist from './util/fileExist';
 import updateProject from './util/updateProject';
+import installCertificate from './util/installCertificate';
+import installMobileProvision from './util/installMobileProvision';
 import config from '../config';
 import {
     addPlatform,
@@ -30,6 +33,7 @@ const workingDir = path.resolve(__dirname, 'working');
 const originDir = path.resolve(__dirname, '.');
 
 async function pack(cfg) {
+
     console.log(cfg);
     const o = new Object();
     o.id = cfg.id;
@@ -49,7 +53,9 @@ async function pack(cfg) {
     // o.baseSvnUser = 'zhouzy';
     // o.baseSvnPassword = 'zhouzy';
     o.wwwPath = `${o.appName}/www`;
-    o.iconPath = `${o.appName}/www/app.icon`;
+    o.resPath = `${o.appName}/res`;
+    o.hooksPath = `${o.appName}/hooks`;
+    o.iconPath = `${o.resPath}/app.icon`;
     o.configXML = `${o.appName}/config.xml`;
     o.htmlPath = `${o.appName}/www/index.html`;
     const defaultPlugins = ["cordova-plugin-app-version",
@@ -61,13 +67,19 @@ async function pack(cfg) {
         "cordova-plugin-inappbrowser",
         "cordova-plugin-whitelist",
         // "cordova-plugin-x-socialsharing",
-        "phonegap-plugin-barcodescanner",
+        // "phonegap-plugin-barcodescanner",
         // "ionic-plugin-keyboard",
         "cordova-plugin-network-information",
         "cordova-plugin-dialogs",
         // "cordova-plugin-crosswalk-webview",
         "com-sarriaroman-photoviewer"];
     o.appPlugin = defaultPlugins;
+    if (cfg.project.plugins) {
+        const plugins = cfg.project.plugins.filter(v => v && (!v.platform || v.platform == o.appPlatform));
+        for (let i = 0; i < plugins.length; i++) {
+            o.appPlugin.push(plugins[i].url);
+        }
+    }
     // o.projectPath = `${o.svnDir}/js/lib/`;
     // o.projectDir = `${o.svnDir}/js/lib/${projectDirName(o.projectSvn)}`;
     // console.log(o.svnDir);
@@ -79,7 +91,13 @@ async function pack(cfg) {
     o.appBuildType = cfg.debug ? 'debug' : 'release';
     o.appPackageName = cfg.project.appId;
     o.appVersion = cfg.version;
-    o.appIosMp = cfg.appIosMp;
+    o.appIosMp = {};
+    if (o.appPlatform == 'ios') {
+        o.mobileProvisionUrl = url.resolve(config.server.baseUrl, cfg.project.ios.mobileProvision.url);
+        o.certificateUrl = url.resolve(config.server.baseUrl, cfg.project.ios.certificate.file.url);
+        o.certificatePwd = cfg.project.ios.certificate.password;
+        o.appPlugin.push('org.frd49.cordova.exitapp');
+    }
     // o.yigoVersion = cfg.yigoVersion;
 
     // o.apkLink = cfg.apkDownloadLink;
@@ -95,23 +113,51 @@ async function pack(cfg) {
         await emptyDir(workingDir);
         process.chdir(workingDir);
         logger.info('pack enviroment initialize success');
+
+        if (o.appPlatform == 'ios') {
+
+            logger.info('Install p12 begin ');
+            await installCertificate(o.certificateUrl, o.certificatePwd);
+            logger.info('Install p12 success.');
+
+            logger.info('Install mobile provision begin');
+            const mobileProvision = await installMobileProvision(o.mobileProvisionUrl);
+            logger.info('Install mobile provision success.');
+            o.appIosMp = mobileProvision;
+        }
+
         logger.info('create cordova begin');
         await createCordova(o.appName, o.appNameSpace);
         logger.info('create cordova success');
+        console.log(cfg.project.icon);
+        await emptyDir(o.resPath);
+        await emptyDir(o.hooksPath);
+        await emptyDir(o.wwwPath);
+        logger.info('download icon begin');
+        await download(o.icon, o.iconPath);
+        console.log(__dirname);
+        if (o.appPlatform == 'ios') {
+            await createIcons(o.appPlatform, o.iconPath, `${o.appName}/res/${o.appPlatform}/`);
+        }
+        logger.info('download icon OK');
         await processCode(o.configXML, o.appVersion, o.appPackageName, o.appName, o.appDescription, o.appIcon, null, o.appPlatform, o.appBuildType);
-        logger.info('process config.xml success')
-        await addBaiduMapScript(o.htmlPath, o.appPlugin);
+        logger.info('process config.xml success');
+
         // 解压缩任务中的压缩包
         const file = "tmp.zip";
         console.log(o.package);
         await download(o.package, file);
-        fs.createReadStream(file).pipe(unzip.Extract({ path: o.wwwPath }));
+        await extract(file, o.wwwPath);
         logger.info('unzip www OK');
-        console.log(cfg.project.icon);
-        await download(o.icon, o.iconPath);
-        console.log(__dirname);
-        fs.createReadStream(path.resolve(__dirname,'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
-        logger.info('download icon OK');
+        fs.createReadStream(path.resolve(__dirname, 'serverpath.html')).pipe(fs.createWriteStream(path.resolve(o.wwwPath, 'serverpath.html')));
+        logger.info('copy serverpath.html OK');
+        if (o.appPlatform == 'android') {
+            logger.info('add hook begin');
+            fs.createReadStream(path.resolve(__dirname, './cordovapack/hooks/android.max_aspect.js')).pipe(fs.createWriteStream(path.resolve(o.hooksPath, 'android.max_aspect.js')));
+            logger.info('add hook OK');
+        }
+        // await addBaiduMapScript(o.htmlPath, o.appPlugin);
+
         process.chdir(o.appName);
         await addPlatform(o.appPlatform);
         logger.info('cordova add platform OK');
@@ -128,9 +174,9 @@ async function pack(cfg) {
         let src = null;
         // process.chdir(originDir);
         if (o.appPlatform === 'ios') {
-            let dest = o.ipaLink;
-            const reg = new RegExp('^(.+)\/(?:[^/]+)$');
-            dest = reg.exec(dest)[1];
+            // let dest = o.ipaLink;
+            // const reg = new RegExp('^(.+)\/(?:[^/]+)$');
+            // dest = reg.exec(dest)[1];
             src = ['platforms/ios/build/device/', o.appName, '.ipa'].join('');
             const data = await upload(config.server.upload, src);
             const ipaUrl = data.url;
@@ -184,5 +230,16 @@ async function pack(cfg) {
         await cfg.save();
         fs.remove(logFile);
     }
+}
+const extract = (file, dir) => {
+    return new Promise((resolve, reject) => {
+        var res = fs.createReadStream(file).pipe(unzip.Extract({ path: dir }));
+        res.on('error', (error) => {
+            reject(error);
+        });
+        res.on('close', () => {
+            resolve();
+        });
+    });
 }
 export default pack;

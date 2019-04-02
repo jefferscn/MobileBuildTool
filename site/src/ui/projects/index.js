@@ -7,6 +7,7 @@ import IOSInstallLink from '../IOSInstallLink';
 import baseUrl from '../../server/baseUrl';
 import QRCodeField from '../QRCodeField';
 import ProjectName from './ProjectName';
+import PluginInput from '../plugins';
 
 export class ProjectList extends PureComponent{
     render(){
@@ -16,6 +17,7 @@ export class ProjectList extends PureComponent{
                 {/* <TextField source="name" /> */}
                 <TextField source="desc" />
                 <TextField source="lastRelease.ios.version" label="IOS版本"/>
+                <TextField source="lastRelease.android.version" label="Android版本"/>
                 <EditButton />
                 <ShowButton/>
             </Datagrid>
@@ -60,6 +62,9 @@ export class ProjectCreate extends PureComponent{
                         <TextInput label="签名用户" source="android.keyStore.userName" />
                         <TextInput label="签名密码" source="android.keyStore.password" type="password"/>
                     </FormTab>
+                    <FormTab label="插件">
+                        <PluginInput source="plugins" />
+                    </FormTab>
                 </TabbedForm>
             </Create>
         )
@@ -103,6 +108,9 @@ export class ProjectEdit extends PureComponent{
                         <TextInput label="签名用户" source="android.keyStore.userName" />
                         <TextInput label="签名密码" source="android.keyStore.password" type="password"/>
                     </FormTab>
+                    <FormTab label="插件">
+                        <PluginInput source="plugins" />
+                    </FormTab>
                 </TabbedForm>
             </Edit>
         )
@@ -115,12 +123,13 @@ export class ProjectShow extends PureComponent{
         return (<Show {...this.props} hasEdit={false} actions={<div/>} hasList={false}>
             <SimpleShowLayout>
                 <TextField label="项目" source="name" />
-                <TextField source="lastRelease.ios.version" label="版本"/>
+                <TextField source="lastRelease.ios.version" label="IOS版本"/>
+                <TextField source="lastRelease.android.version" label="Android版本"/>
                 <QRCodeField text={ (record)=>`${baseUrl}/#/projects/${record.id}/show`} source="id" label="二维码"/>
-                <ReferenceField source="lastRelease.ios.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
+                <ReferenceField source="lastRelease.ios.taskId" reference="tasks" addLabel={false} elStyle={{textDecoration: 'none'}}>
                     <IOSInstallLink addLabel = {true} label = "" buttonLabel="IOS安装" source = "targetUrl"/>
                 </ReferenceField>
-                <ReferenceField source="lastRelease.android.taskId" reference="tasks" elStyle={{textDecoration: 'none'}}>
+                <ReferenceField style={{paddingTop:10}} source="lastRelease.android.taskId" reference="tasks" addLabel={false} elStyle={{textDecoration: 'none'}}>
                     <IOSInstallLink addLabel = {true} label = "" buttonLabel="Android安装" source = "targetUrl"/>
                 </ReferenceField>
             </SimpleShowLayout>

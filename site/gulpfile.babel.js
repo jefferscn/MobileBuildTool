@@ -71,3 +71,11 @@ gulp.task('buildserver',()=>{
         $.util.log(`[${ServerWebpackConfig.name} dist]`, stats.toString({colors: true}));
     })
 });
+
+gulp.task('buildserver:dist',()=>{
+    ServerWebpackConfig.watch=false;
+    webpack(ServerWebpackConfig,(err,stats) => {
+        if (err) throw new $.util.PluginError(DEST_DIR, err);
+        $.util.log(`[${ServerWebpackConfig.name} dist]`, stats.toString({colors: true}));
+    })
+});
